@@ -5,8 +5,6 @@ var pruno = require('pruno');
 pruno(function(mix) {
   mix
     .configure({dir: __dirname + '/config'})
-    .http()
-    .jade()
     .publish()
     .publish('fonts', {
       pkg: 'font-awesome',
@@ -14,5 +12,6 @@ pruno(function(mix) {
       dist: '::dist/fonts'
     })
     .stylus()
-    .webpack();
+    .webpack()
+    .http();
 });

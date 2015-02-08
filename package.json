@@ -33,7 +33,6 @@
     "gulp": "^3.8.10",
     "pruno": "^2.0.3",
     "pruno-http": "^2.0.2",
-    "pruno-jade": "^1.0.7",
     "pruno-publish": "^1.0.3",
     "pruno-stylus": "^1.0.4",
     "pruno-webpack": "^1.0.0",
