@@ -1,0 +1,9 @@
+"use strict";
+
+var path = require('path');
+
+module.exports = {
+  modelsPath: path.join(__dirname, 'api', 'models'),
+  migrationsPath: path.join(__dirname, 'api', 'migrations'),
+  config: __filname
+};
