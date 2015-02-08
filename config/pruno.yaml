@@ -1,0 +1,43 @@
+vars:
+  src: ./app
+  dist: ./public
+stylus:
+  entry: "::src/stylus/index.styl"
+  dist: "::dist/stylesheets/app.css"
+  search: "::src/**/*.styl"
+  minify: false
+  source-maps: true
+  font-awesome: true
+  normalize: true
+  use:
+    - nib
+    - jeet
+    - rupture
+http:
+  lrPort: 35729
+  listen: 3000
+  env: development
+  dist: "::dist"
+  file: "./server.js"
+publish:
+  pkg: false
+  src:
+    - "::src/assets/**/*"
+  dist: "::dist"
+jade:
+  data: "::src/templates/data"
+  entry: "::src/templates/**/*.jade"
+  dist: "::dist"
+  search:
+    - "::src/templates/**/*.jade"
+    - "::src/templates/data/**/*"
+  ignorePrefix: _
+webpack:
+  entry: "::src/index.js"
+  dist: "::dist/bundle.js"
+  hot-load: true
+  uglify: false
+  es6: true
+  context: false
+  devtool: eval-source-map
+  devport: 9000

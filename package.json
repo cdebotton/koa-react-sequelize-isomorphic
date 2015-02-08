@@ -1,0 +1,43 @@
+{
+  "name": "react-app",
+  "version": "0.1.0",
+  "description": "New Pruno application",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "pruno",
+  "license": "ISC",
+  "dependencies": {
+    "6to5": "^3.5.3",
+    "fluxd": "^1.0.9",
+    "font-awesome": "^4.3.0",
+    "koa": "^0.17.0",
+    "koa-bodyparser": "^1.3.1",
+    "koa-compress": "^1.0.8",
+    "koa-favicon": "^1.2.0",
+    "koa-isomorphic": "^1.0.2",
+    "koa-json": "^1.1.1",
+    "koa-static": "^1.4.9",
+    "pg": "^4.2.0",
+    "pg-hstore": "^2.3.1",
+    "react": "^0.12.2",
+    "react-router": "^0.11.6",
+    "sequelize": "^2.0.0-rc8",
+    "sequelize-cli": "^1.2.0"
+  },
+  "devDependencies": {
+    "6to5-core": "^3.5.3",
+    "6to5-loader": "^3.0.0",
+    "gulp": "^3.8.10",
+    "pruno": "^2.0.3",
+    "pruno-http": "^2.0.2",
+    "pruno-jade": "^1.0.7",
+    "pruno-publish": "^1.0.3",
+    "pruno-stylus": "^1.0.4",
+    "pruno-webpack": "^1.0.0",
+    "react-hot-loader": "^1.1.4",
+    "webpack": "^1.5.3",
+    "webpack-dev-server": "^1.7.0"
+  }
+}
