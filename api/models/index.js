@@ -3,9 +3,12 @@
 import fs from "fs";
 import path from "path";
 import Sequelize from "sequelize";
+import envConfig from "yaml-env-config";
 
 const env = process.env.NODE_ENV || 'development';
-var config = require(__dirname + '/../../config/db.json')[env];
+var config = envConfig(__dirname + '/../../config/db.json', {
+  absolute: true
+}).db;
 
 const {db, username, password} = config;
 var sequelize = new Sequelize(db, username, password, config);
