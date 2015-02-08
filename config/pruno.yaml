@@ -24,14 +24,6 @@ publish:
   src:
     - "::src/assets/**/*"
   dist: "::dist"
-jade:
-  data: "::src/templates/data"
-  entry: "::src/templates/**/*.jade"
-  dist: "::dist"
-  search:
-    - "::src/templates/**/*.jade"
-    - "::src/templates/data/**/*"
-  ignorePrefix: _
 webpack:
   entry: "::src/index.js"
   dist: "::dist/bundle.js"

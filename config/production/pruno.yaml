@@ -1,0 +1,11 @@
+vars:
+  src: ./app
+  dist: ./public
+stylus:
+  dist: "::dist/stylesheets/app.min.css"
+  minify: true
+  source-maps: false
+webpack:
+  dist: "::dist/bundle.min.js"
+  uglify: true
+  devtool: false
