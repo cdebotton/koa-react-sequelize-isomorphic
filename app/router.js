@@ -1,3 +1,5 @@
+'use strict';
+
 import { create as createRouter, HistoryLocation } from "react-router";
 import routes from "./routes";
 

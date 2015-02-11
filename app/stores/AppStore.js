@@ -1,3 +1,5 @@
+'use strict';
+
 import AppDispatcher from "../dispatcher/AppDispatcher";
 import {ServerActionTypes, ViewActionTypes} from "../constants/ActionTypes";
 import {createStore} from "../utils/StoreUtils";

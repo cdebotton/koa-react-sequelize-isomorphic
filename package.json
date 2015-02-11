@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "6to5": "^3.5.3",
+    "bluebird": "^2.9.8",
     "flux": "^2.0.1",
     "font-awesome": "^4.3.0",
     "immutable": "^3.6.2",
@@ -27,6 +28,7 @@
     "react-router": "^0.11.6",
     "sequelize": "^2.0.0-rc8",
     "sequelize-cli": "^1.2.0",
+    "superagent": "^0.21.0",
     "yaml-env-config": "^1.1.0"
   },
   "devDependencies": {

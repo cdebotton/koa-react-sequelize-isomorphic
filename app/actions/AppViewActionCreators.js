@@ -1,3 +1,5 @@
+'use strict';
+
 import AppDispatcher from "../dispatcher/AppDispatcher";
 import {ViewActionTypes} from "../constants/ActionTypes";
 

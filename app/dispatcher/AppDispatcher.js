@@ -1,3 +1,5 @@
+'use strict';
+
 import {Dispatcher} from "flux";
 import assign from "object-assign";
 import invariant from "react/lib/invariant";

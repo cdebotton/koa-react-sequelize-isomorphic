@@ -1,7 +1,17 @@
+'use strict';
+
 import React from "react";
+import TumblrAPI from "../utils/TumblrAPI";
 import AppViewActionCreators from "../actions/AppViewActionCreators";
+import Promise from "bluebird";
 
 var IndexRoute = React.createClass({
+  statics: {
+    fetchData() {
+      return TumblrAPI.posts();
+    }
+  },
+
   onActivate() {
     AppViewActionCreators.activate();
   },

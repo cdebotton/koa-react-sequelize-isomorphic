@@ -1,3 +1,5 @@
+'use strict';
+
 import {EventEmitter} from "events";
 import assign from "object-assign";
 
