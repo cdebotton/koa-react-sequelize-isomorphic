@@ -1,21 +1,18 @@
 import React from "react/addons";
 import {RouteHandler} from "react-router";
-import Head from "./Head";
 import AppStore from "../stores/AppStore";
-import {StoreListenerMixin} from "fluxd";
+import Head from "./Head";
 
 var {classSet} = React.addons;
+var {PropTypes} = React;
 
 var App = React.createClass({
-  mixins: [StoreListenerMixin],
-
   propTypes: {
-    env: React.PropTypes.string
+    env: PropTypes.string
   },
 
   getInitialState() {
     var {toggle} = AppStore.getState();
-
     return {toggle};
   },
 
@@ -24,10 +21,14 @@ var App = React.createClass({
   },
 
   componentDidMount() {
-    this.listenTo(AppStore, this.onChange.bind(this));
+    AppStore.addChangeListener(this.getStoreData);
   },
 
-  onChange() {
+  componentWillUnmount() {
+    AppStore.removeChangeListener(this.getStoreData);
+  },
+
+  getStoreData() {
     this.setState(this.getInitialState());
   },
 

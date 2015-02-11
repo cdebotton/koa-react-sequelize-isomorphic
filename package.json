@@ -10,8 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "6to5": "^3.5.3",
-    "fluxd": "^1.0.9",
+    "flux": "^2.0.1",
     "font-awesome": "^4.3.0",
+    "immutable": "^3.6.2",
     "koa": "^0.17.0",
     "koa-bodyparser": "^1.3.1",
     "koa-compress": "^1.0.8",
@@ -19,6 +20,7 @@
     "koa-isomorphic": "^1.0.2",
     "koa-json": "^1.1.1",
     "koa-static": "^1.4.9",
+    "object-assign": "^2.0.0",
     "pg": "^4.2.0",
     "pg-hstore": "^2.3.1",
     "react": "^0.12.2",
@@ -35,7 +37,7 @@
     "pruno-http": "^2.0.2",
     "pruno-publish": "^1.0.3",
     "pruno-stylus": "^1.0.4",
-    "pruno-webpack": "^1.0.0",
+    "pruno-webpack": "^1.0.2",
     "react-hot-loader": "^1.1.4",
     "webpack": "^1.5.3",
     "webpack-dev-server": "^1.7.0"

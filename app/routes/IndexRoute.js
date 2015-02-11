@@ -1,17 +1,17 @@
 import React from "react";
-import AppActionCreators from "../actions/AppActionCreators";
+import AppViewActionCreators from "../actions/AppViewActionCreators";
 
 var IndexRoute = React.createClass({
   onActivate() {
-    AppActionCreators.activate();
+    AppViewActionCreators.activate();
   },
 
   onDeactivate() {
-    AppActionCreators.deactivate();
+    AppViewActionCreators.deactivate();
   },
 
   onToggle() {
-    AppActionCreators.toggle();
+    AppViewActionCreators.toggle();
   },
 
   render() {
