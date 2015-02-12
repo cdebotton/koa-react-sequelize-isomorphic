@@ -13,7 +13,7 @@ export default {
   requestSuccess(data) {
     AppDispatcher.handleServerAction({
       type: ServerActionTypes.REQUEST_RESOURCE_SUCCESS,
-      data: data
+      body: data
     });
   },
 

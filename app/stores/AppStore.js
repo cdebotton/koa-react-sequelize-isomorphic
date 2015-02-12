@@ -5,13 +5,13 @@ import {ServerActionTypes, ViewActionTypes} from "../constants/ActionTypes";
 import {createStore} from "../utils/StoreUtils";
 import {Map, fromJS} from "immutable";
 
-var _entities = fromJS({
+var _state = fromJS({
   toggle: false
 });
 
 var AppStore = createStore({
   getState() {
-    return _entities.toJS();
+    return _state.toJS();
   }
 });
 
@@ -20,20 +20,21 @@ AppStore.dispatchToken = AppDispatcher.register(payload => {
 
   switch (action.type) {
   case ServerActionTypes.REQUEST_RESOURCE:
+
     break;
   case ServerActionTypes.REQUEST_RESOURCE_SUCCESS:
     break;
   case ServerActionTypes.REQUEST_RESOURCE_ERROR:
     break;
   case ViewActionTypes.TOGGLE:
-    let toggle = _entities.get('toggle');
-    _entities = _entities.set('toggle', !toggle);
+    let toggle = _state.get('toggle');
+    _state = _state.set('toggle', !toggle);
     break;
   case ViewActionTypes.ACTIVATE:
-    _entities = _entities.set('toggle', true);
+    _state = _state.set('toggle', true);
     break;
   case ViewActionTypes.DEACTIVATE:
-    _entities = _entities.set('toggle', false);
+    _state = _state.set('toggle', false);
     break;
   }
 
