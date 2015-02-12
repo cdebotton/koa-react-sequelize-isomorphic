@@ -10,13 +10,14 @@ var IndexRoute = React.createClass({
   mixins: [StoreListenerMixin(PostStore)],
 
   statics: {
-    willTransitionTo() {
-      TumblrAPI.posts();
+    fetchData(params, query) {
+      return TumblrAPI.posts();
     }
   },
 
   getStateFromStores() {
-    let {posts} = PostStore.getState();
+    var {posts} = PostStore.getState();
+
     return {posts};
   },
 
@@ -32,19 +33,28 @@ var IndexRoute = React.createClass({
     AppViewActionCreators.toggle();
   },
 
-  renderPhotoData(photo) {
+  renderPhotoData(postId, photo, key) {
     var {url, width, height} = photo.alt_sizes[0];
     return (
       <img
+        key={postId + '.image.' + key}
         src={url}
         width={width}
         height={height} />
     );
   },
 
-  renderPostData(post) {
+  renderPostData(post, key) {
+    var delay = `${500 + (key * 125)}ms`;
+    var styles = {
+      animationDelay: delay,
+      WebkitAnimationDelay: delay,
+      MozAnimationDelay: delay,
+      MsAnimationDelay: delay
+    };
+
     return (
-      <li key={post.id}>
+      <li key={post.id} className="post" style={styles}>
         {post.caption &&
           <span dangerouslySetInnerHTML={{__html: post.caption}} />
         }
@@ -52,7 +62,7 @@ var IndexRoute = React.createClass({
           <div dangerouslySetInnerHTML={{__html: post.player[2].embed_code}} />
         }
         {post.photos &&
-          <ul>{post.photos.map(this.renderPhotoData)}</ul>
+          <ul>{post.photos.map(this.renderPhotoData.bind(this, post.id))}</ul>
         }
       </li>
     );
@@ -64,10 +74,14 @@ var IndexRoute = React.createClass({
     return (
       <div className="index-route">
         <h2>IndexRoute <i className="fa fa-home" /></h2>
-        <button onClick={this.onActivate}>Activate</button>
-        <button onClick={this.onDeactivate}>Deactivate</button>
-        <button onClick={this.onToggle}>Toggle</button>
-        <ul>{posts.map(this.renderPostData)}</ul>
+        <nav>
+          <button onClick={this.onActivate}>Activate</button>
+          <button onClick={this.onDeactivate}>Deactivate</button>
+          <button onClick={this.onToggle}>Toggle</button>
+        </nav>
+        {posts &&
+          <ul className="post-wall">{posts.map(this.renderPostData)}</ul>
+        }
       </div>
     );
   }

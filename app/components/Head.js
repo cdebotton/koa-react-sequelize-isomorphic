@@ -19,7 +19,13 @@ var Head = React.createClass({
     return (
       <head>
         <title>React/Koa/Isomorphic Scaffold</title>
-        <link rel="stylesheet" href={CSS} />
+        <link
+          href="http://fonts.googleapis.com/css?family=Lato:300,400,700"
+          rel="stylesheet"
+          type="text/css" />
+        <link
+          rel="stylesheet"
+          href={CSS} />
       </head>
     );
   }

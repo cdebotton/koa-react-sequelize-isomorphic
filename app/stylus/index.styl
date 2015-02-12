@@ -1,11 +1,11 @@
 @import 'nib'
 @import 'jeet'
 @import 'rupture'
+@import 'base'
+@import 'layout'
+@import 'components'
 
-*
-*::before
-*::after
-  box-sizing border-box
-
-h1.active
-  color red
+h1
+  transition all 175ms ease-in-out
+  &.active
+    color red

@@ -7,11 +7,25 @@ import Promise from "bluebird";
 
 require('6to5/polyfill');
 
+var firstCall = true;
+
+var renderData = (Handler, state) => {
+  return (data) => React.render(<Handler {...state} />, document);
+};
+
 router.run((Handler, state) => {
-  let promises = state.routes.filter(route => route.handler.fetchData)
+  let promises = state.routes
+    .filter(route => route.handler.fetchData)
     .map(route => route.handler.fetchData(state.params, state.query));
 
-  Promise.all(promises);
+  let renderer = renderData(Handler, state);
+  let promise = Promise.all(promises);
 
-  React.render(<Handler {...state} />, document);
+  if (firstCall) {
+    firstCall = false;
+    promise.then(renderer);
+  }
+  else {
+    renderer();
+  }
 });
