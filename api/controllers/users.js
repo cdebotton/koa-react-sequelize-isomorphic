@@ -1,23 +1,48 @@
-export default (api) => {
-  api.get('users', () => {
+import {User} from "../models";
 
-  });
+export default (router) => {
+  router
+    .get('users', function *(next) {
+      let users = yield User.findAll({
+        attributes: ['id', ['email']]
+      });
 
-  api.get('users/:userId', (userId) => {
+      this.body = {users};
+    });
 
-  });
+  router
+    .param('user', findUser)
+    .get('users/:user', function *(next) {
+      this.body = this.user;
+    });
 
-  api.post('users', () => {
+  router
+    .post('users', function *(next) {
 
-  });
+    });
 
-  api.put('users/:userId', (userId) => {
+  router
+    .param('user', findUser)
+    .put('users/:user', function *(next) {
 
-  });
+    });
 
-  api.del('users/:userId', (userId) => {
+  router
+    .param('user', findUser)
+    .del('users/:user', function *(next) {
 
-  });
+    });
 
-  return api;
 };
+
+function *findUser(userId, next) {
+  this.user = yield User.find({
+    where: {userId: userId},
+    attributes: ['id', ['email']]
+  });
+
+  if (! this.user) return this.status = 404;
+
+  yield next;
+};
+

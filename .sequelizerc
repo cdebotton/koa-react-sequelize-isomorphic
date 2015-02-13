@@ -5,6 +5,8 @@ var envConfig = require('yaml-env-config');
 var config = envConfig(__dirname + '/config', {absolute: true});
 var assign = require('object-assign');
 
+require('6to5/register');
+
 var rc = {};
 var env = process.env.NODE_ENV || 'development';
 rc[env] = config.db;

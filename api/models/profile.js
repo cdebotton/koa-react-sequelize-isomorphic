@@ -1,10 +1,5 @@
 export default (sequelize, DataTypes) => {
   var Profile = sequelize.define('Profile', {
-    id: {
-      type: DataTypes.INTENGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
     firstName: DataTypes.STRING,
