@@ -1,58 +1,91 @@
 import {ServerActionTypes, ViewActionTypes} from "../constants/ActionTypes";
 import AppDispatcher from "../dispatcher/AppDispatcher";
-import {createStore} from "../utils/StoreUtils";
+import {FluxStore} from "../utils/StoreUtils";
 import Immutable from "immutable";
 
-var _state = Immutable.fromJS({
-  users: []
-});
 
-var UserStore = createStore({
+class UserStore extends FluxStore {
+  constructor() {
+    super(this);
+
+    this.users = Immutable.List();
+
+    this.listenTo({
+      'CREATE_USER': 'onCreateUser',
+      'CREATE_USER_SUCCESS': 'onCreateUserSuccess',
+      'CREATE_USER_ERROR': 'onCreateUserError',
+
+      'GET_USERS': 'onGetUsers',
+      'GET_USERS_SUCCESS': 'onGetUsersSuccess',
+      'GET_USERS_ERROR': 'onGetUsersError',
+
+      'DESTROY_USER': 'onDestroyUser',
+      'DESTROY_USER_SUCCESS': 'onDestroyUserSuccess',
+      'DESTROY_USER_ERROR': 'onDestroyUserError'
+    });
+  }
+
   getState() {
-    return _state.toJS();
-  }
-});
+    let users = this.users.toJS();
 
-UserStore.dispatchToken = AppDispatcher.register(payload => {
-  let {action} = payload;
-
-  switch (action.type) {
-  case ViewActionTypes.CREATE_USER:
-    createUser(action.email);
-    break;
-  case ServerActionTypes.GET_USERS_SUCCESS:
-    mergeUsers(action.users);
-    break;
-  case ServerActionTypes.GET_USERS_ERROR:
-    break;
-
-  case ViewActionTypes.DESTROY_USER:
-    destroyUser(action.id);
-    break;
+    return {users};
   }
 
-  UserStore.emitChange();
-});
+  onGetUsers() {
+    return false;
+  }
 
-var createUser = (email) => {
-  _state = _state.updateIn(['users'], list => list.concat({email}));
+  onCreateUser({email}) {
+    let user = Immutable.fromJS({email});
+
+    this.users = this.users.concat(user);
+  }
+
+  onCreateUserSuccess({user}) {
+    return false;
+  }
+
+  onCreateUserError(err) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error(err);
+    }
+
+    return false;
+  }
+
+  onGetUsersSuccess({users}) {
+    let ids = this.users.map(user => user.get('id'));
+    let toAdd = users.filter(user => ids.indexOf(user.id) === -1);
+
+   this.users = this.users.concat(Immutable.fromJS(toAdd));
+  }
+
+  onGetUsersError(err) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error(err);
+    }
+
+    return false;
+  }
+
+  onDestroyUser({id}) {
+    let index = this.users.findIndex(user => user.get('id') === id);
+
+    this.users = this.users.splice(index, 1);
+  }
+
+  onDestroyUserSuccess() {
+    return false;
+  }
+
+  onDestroyUserError(err) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error(err);
+    }
+
+    return false;
+  }
 };
 
-var mergeUsers = (newUsers) => {
-  _state = _state.updateIn(['users'], users => {
-    let ids = users.map(user => user.id);
-    let toAdd = newUsers.filter(user => ids.indexOf(user.id) === -1);
+export default new UserStore();
 
-    return users.concat(toAdd);
-  });
-};
-
-var destroyUser = (id) => {
-  _state = _state.updateIn(['users'], users => {
-    let index = users.findIndex(user => user.id === id);
-
-    return users.splice(index, 1);
-  });
-};
-
-export default UserStore;

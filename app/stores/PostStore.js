@@ -1,35 +1,28 @@
 'use strict';
 
-import {createStore} from "../utils/StoreUtils";
+import {FluxStore} from "../utils/StoreUtils";
 import AppDispatcher from "../dispatcher/AppDispatcher";
-import {ServerActionTypes} from "../constants/ActionTypes";
 import Immutable from "immutable";
 
-var _state = Immutable.fromJS({
-  posts: []
-});
+class PostStore extends FluxStore {
+  constructor() {
+    super(this);
+    this.posts = Immutable.List();
+    this.listenTo({
+      'REQUEST_RESOURCE_SUCCESS': 'onRequestResourceSuccess'
+    });
+  }
 
-var PostStore = createStore({
   getState() {
-    return _state.toJS();
-  }
-});
+    let posts = this.posts.toJS();
 
-PostStore.dispatchToken = AppDispatcher.register(payload => {
-  let action = payload.action;
-
-  switch (action.type) {
-  case ServerActionTypes.REQUEST_RESOURCE:
-    break;
-  case ServerActionTypes.REQUEST_RESOURCE_SUCCESS:
-    let {posts} = action.body.response;
-    _state = _state.updateIn(['posts'], list => list.concat(posts));
-    break;
-  case ServerActionTypes.REQUEST_RESOURCE_ERROR:
-    break;
+    return { posts };
   }
 
-  PostStore.emitChange();
-});
+  onRequestResourceSuccess({body}) {
+    let {posts} = body.response;
+    this.posts = this.posts.concat(posts);
+  }
+}
 
-export default PostStore;
+export default new PostStore();

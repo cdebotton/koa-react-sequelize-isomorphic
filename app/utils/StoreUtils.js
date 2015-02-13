@@ -1,34 +1,67 @@
 'use strict';
 
-import {EventEmitter} from "events";
 import assign from "object-assign";
+import {EventEmitter} from "events";
+import AppDispatcher from "../dispatcher/AppDispatcher";
+import Immutable from "immutable";
 
 const CHANGE_EVENT = 'change';
+var storeCache = Immutable.Map();
 var toString = (obj) => Object.prototype.toString.call(obj);
 var isFunc = (obj) => toString(obj) === '[object Function]';
 
-export var createStore = (spec) => {
-  let store = assign({
-    emitChange() {
-      this.emit(CHANGE_EVENT);
-    },
+export class FluxStore extends EventEmitter {
+  constructor(context) {
+    let {name} = this.constructor;
+    storeCache = storeCache.set(name, this.getState.bind(context));
+    context.setMaxListeners(0);
+  }
 
-    addChangeListener(callback) {
-      this.on(CHANGE_EVENT, callback);
-    },
+  emitChange() {
+    this.emit(CHANGE_EVENT);
+  }
 
-    removeChangeListener(callback) {
-      this.removeListener(CHANGE_EVENT, callback);
+  addChangeListener(callback) {
+    this.on(CHANGE_EVENT, callback);
+  }
+
+  removeChangeListener(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
+
+  listenTo(actions) {
+    this.dispatchToken = AppDispatcher.register(payload => {
+      let {action} = payload;
+      let {type} = action;
+      let keys = Object.keys(actions);
+      let index = keys.indexOf(type);
+      let fn = this[actions[type]];
+
+      if (keys.indexOf(type) > -1 && isFunc(fn)) {
+        let result = fn.call(this, action);
+        if (result === false) return false;
+      }
+
+      this.emitChange();
+    });
+  }
+}
+
+export var snapshot = () => {
+  let snapshot = storeCache.reduce((memo, state, key) => {
+    try {
+      memo[key] = state();
     }
-  }, spec, EventEmitter.prototype);
-
-  Object.keys(store).forEach((key) => {
-    if (isFunc(store[key])) {
-      store[key] = store[key].bind(store);
+    catch (err) {
+      memo[key] = {};
     }
-  });
 
-  store.setMaxListeners(0);
+    return memo;
+  }, {});
 
-  return store;
+  return snapshot;
+};
+
+export var hydrate = (snapshot) => {
+
 };

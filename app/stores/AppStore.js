@@ -1,44 +1,38 @@
 'use strict';
 
 import AppDispatcher from "../dispatcher/AppDispatcher";
-import {ServerActionTypes, ViewActionTypes} from "../constants/ActionTypes";
-import {createStore} from "../utils/StoreUtils";
-import {Map, fromJS} from "immutable";
+import {FluxStore} from "../utils/StoreUtils";
 
-var _state = fromJS({
-  toggle: false
-});
+class AppStore extends FluxStore {
+  constructor() {
+    super(this);
 
-var AppStore = createStore({
+    this.toggle = false;
+
+    this.listenTo({
+      'TOGGLE': 'onToggle',
+      'ACTIVATE': 'onActivate',
+      'DEACTIVATE': 'onDeactivate'
+    });
+  }
+
   getState() {
-    return _state.toJS();
-  }
-});
+    let {toggle} = this;
 
-AppStore.dispatchToken = AppDispatcher.register(payload => {
-  let action = payload.action;
-
-  switch (action.type) {
-  case ServerActionTypes.REQUEST_RESOURCE:
-
-    break;
-  case ServerActionTypes.REQUEST_RESOURCE_SUCCESS:
-    break;
-  case ServerActionTypes.REQUEST_RESOURCE_ERROR:
-    break;
-  case ViewActionTypes.TOGGLE:
-    let toggle = _state.get('toggle');
-    _state = _state.set('toggle', !toggle);
-    break;
-  case ViewActionTypes.ACTIVATE:
-    _state = _state.set('toggle', true);
-    break;
-  case ViewActionTypes.DEACTIVATE:
-    _state = _state.set('toggle', false);
-    break;
+    return {toggle};
   }
 
-  AppStore.emitChange();
-});
+  onToggle() {
+    this.toggle = !this.toggle;
+  }
 
-export default AppStore;
+  onActivate() {
+    this.toggle = true;
+  }
+
+  onDeactivate() {
+    this.toggle = false;
+  }
+};
+
+export default new AppStore();
