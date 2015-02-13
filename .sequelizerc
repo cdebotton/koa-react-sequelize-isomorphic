@@ -1,9 +1,16 @@
 "use strict";
 
 var path = require('path');
+var envConfig = require('yaml-env-config');
+var config = envConfig(__dirname + '/config', {absolute: true});
+var assign = require('object-assign');
 
-module.exports = {
+var rc = {};
+var env = process.env.NODE_ENV || 'development';
+rc[env] = config.db;
+
+module.exports = assign({
   modelsPath: path.join(__dirname, 'api', 'models'),
   migrationsPath: path.join(__dirname, 'api', 'migrations'),
-  config: __filname
-};
+  config: __filename
+}, rc);

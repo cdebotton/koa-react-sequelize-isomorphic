@@ -11,7 +11,7 @@ export default {
     let url = makeUrl('posts');
     let {requestSuccess, requestError} = AppServerActionCreators;
 
-    return jsonp(url, {api_key: API_KEY})
+    return jsonp(url, { api_key: API_KEY })
       .then(requestSuccess)
       .catch(requestError);
   }
