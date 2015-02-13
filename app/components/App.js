@@ -3,7 +3,6 @@
 import React from "react/addons";
 import {RouteHandler, Link} from "react-router";
 import AppStore from "../stores/AppStore";
-import {snapshot} from "../utils/StoreUtils";
 import StoreListenerMixin from "../mixins/StoreListenerMixin";
 import Head from "./Head";
 
@@ -18,18 +17,13 @@ var App = React.createClass({
   },
 
   getStateFromStores(props) {
-    var {toggle} = AppStore.getState();
+    let {toggle} = AppStore.getState();
 
     return {toggle};
   },
 
   getDefaultProps() {
     return {env: 'development'};
-  },
-
-  takeSnapshot(event) {
-    event.preventDefault();
-    var json = snapshot();
   },
 
   render() {
@@ -51,11 +45,6 @@ var App = React.createClass({
           <nav>
             <Link to="index">Home</Link>
             <Link to="users">Users</Link>
-            <button
-              type="button"
-              onClick={this.takeSnapshot}>
-              console.log(snapshot);
-            </button>
           </nav>
           <RouteHandler />
         </div>
