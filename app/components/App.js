@@ -27,17 +27,12 @@ var App = React.createClass({
   },
 
   render() {
-    const {toggle} = this.state;
     const {env} = this.props;
     const DEV = env === 'development';
-    const BUNDLE = DEV ?
-      'http://localhost:9000/dist/bundle.js' : '/bundle.min.js';
-    const LR = DEV ?
-      <script src="http://localhost:35729/livereload.js?snipver=1" /> : false;
 
     var cx = classSet({
       title: true,
-      active: toggle
+      active: this.state.toggle
     });
 
     return (
@@ -53,8 +48,10 @@ var App = React.createClass({
           </nav>
           <RouteHandler />
         </div>
-        <script src={BUNDLE} />
-        {LR}
+        <script src={DEV ? 'http://localhost:9000/dist/bundle.js' : '/bundle.min.js'} />
+        {DEV &&
+          <script src="http://localhost:35729/livereload.js?snipver=1" />
+        }
       </body>
       </html>
     );

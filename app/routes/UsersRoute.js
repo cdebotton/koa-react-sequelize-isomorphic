@@ -3,6 +3,7 @@
 import React from "react/addons";
 import UserAPI from "../utils/UserAPI";
 import UserStore from "../stores/UserStore";
+import {Link, RouteHandler} from "react-router";
 import StoreListenerMixin from "../mixins/StoreListenerMixin";
 import UserViewActionCreators from "../actions/UserViewActionCreators";
 
@@ -34,7 +35,13 @@ var UsersRoute = React.createClass({
   renderUserListItem(user, key) {
     return (
       <li key={key}>
-        {user.email}
+        <i className="fa fa-users" />
+        {user.id &&
+          <Link to="user" params={{userId: user.id}}>{user.email}</Link>
+        }
+        {!user.id &&
+          user.email
+        }
       </li>
     );
   },
@@ -45,6 +52,8 @@ var UsersRoute = React.createClass({
     return (
       <div className="users-router">
         <h2>Users Route</h2>
+        <RouteHandler />
+        <h3>User List</h3>
         <form onSubmit={this.handleSubmit}>
           <input type="email" placeholder="email" valueLink={this.linkState('email')} />
           <button type="submit">Create user</button>

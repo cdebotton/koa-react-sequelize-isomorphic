@@ -36,7 +36,10 @@ var createUser = (email) => {
 
 var mergeUsers = (newUsers) => {
   _state = _state.updateIn(['users'], users => {
-    return users.concat(newUsers);
+    let ids = users.map(user => user.id);
+    let toAdd = newUsers.filter(user => ids.indexOf(user.id) === -1);
+
+    return users.concat(toAdd);
   });
 };
 
