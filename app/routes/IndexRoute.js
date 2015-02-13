@@ -44,7 +44,7 @@ var IndexRoute = React.createClass({
     );
   },
 
-  renderPostData(post, key) {
+  renderPostItem(post, key) {
     var delay = `${500 + (key * 125)}ms`;
     var styles = {
       animationDelay: delay,
@@ -54,7 +54,7 @@ var IndexRoute = React.createClass({
     };
 
     return (
-      <li key={post.id} className="post" style={styles}>
+      <li key={[key, post.id].join('//')} className="post" style={styles}>
         {post.caption &&
           <span dangerouslySetInnerHTML={{__html: post.caption}} />
         }
@@ -80,7 +80,7 @@ var IndexRoute = React.createClass({
           <button onClick={this.onToggle}>Toggle</button>
         </nav>
         {posts &&
-          <ul className="post-wall">{posts.map(this.renderPostData)}</ul>
+          <ul className="post-wall">{posts.map(this.renderPostItem)}</ul>
         }
       </div>
     );
