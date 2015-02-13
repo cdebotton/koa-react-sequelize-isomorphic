@@ -8,6 +8,7 @@ export default (sequelize, DataTypes) => {
     classMethods: {
       associate(models) {
         User.hasOne(models.Profile);
+        User.hasMany(models.Photo);
       }
     }
   });

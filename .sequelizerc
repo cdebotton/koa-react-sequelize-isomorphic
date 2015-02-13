@@ -12,7 +12,7 @@ var env = process.env.NODE_ENV || 'development';
 rc[env] = config.db;
 
 module.exports = assign({
-  modelsPath: path.join(__dirname, 'api', 'models'),
-  migrationsPath: path.join(__dirname, 'api', 'migrations'),
+  modelsPath: path.resolve('api', 'models'),
+  migrationsPath: path.resolve('api', 'migrations'),
   config: __filename
 }, rc);

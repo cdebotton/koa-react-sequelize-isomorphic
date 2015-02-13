@@ -3,24 +3,24 @@
 module.exports = {
   up: function(migration, DataTypes, done) {
     migration.createTable(
-      'Users',
+      'Photos',
       {
         id: {
           type: DataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true
         },
-        createdAt: DataTypes.DATE,
-        updatedAt: DataTypes.DATE,
-        email: DataTypes.STRING,
-        password: DataTypes.STRING
+        type: DataTypes.STRING,
+        bucket: DataTypes.STRING,
+        file: DataTypes.STRING,
+        description: DataTypes.TEXT
       }
     );
     done();
   },
 
   down: function(migration, DataTypes, done) {
-    migration.dropTable('Users');
+    migration.dropTable('Photos');
     done();
   }
 };

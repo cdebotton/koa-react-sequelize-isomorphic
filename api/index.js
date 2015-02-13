@@ -17,18 +17,15 @@ const PORT = process.env.PORT || 3000;
 
 let app = koa();
 let router = new Router();
-
+let controllers = requireDir(__dirname + '/controllers')
+Object.keys(controllers).forEach(endpoint => controllers[endpoint](router));
 
 app.use(compress());
 app.use(bodyparser());
 app.use(json({ pretty: DEV }));
 app.use(serveStatic(path.join(__dirname, '../public')));
+app.use(mount('/api/v1', router.middleware()));
 app.use(isomorphic(path.join(__dirname, '../app/routes')));
-
-let controllers = requireDir(__dirname + '/controllers')
-Object.keys(controllers).forEach(endpoint => controllers[endpoint](router));
-
-app.use(mount('/api/v1', router));
 
 app.listen(PORT, (err) => {
   if (err) throw err;
