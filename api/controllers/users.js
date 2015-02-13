@@ -12,7 +12,7 @@ export default (router) => {
 
   router
     .post('/users', function *(next) {
-      let {email} = this.request;
+      let {email} = this.request.body;
       let user = yield User.create({
         email: email
       });

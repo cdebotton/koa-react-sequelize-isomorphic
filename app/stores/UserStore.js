@@ -20,9 +20,10 @@ UserStore.dispatchToken = AppDispatcher.register(payload => {
   case ViewActionTypes.CREATE_USER:
     createUser(action.email);
     break;
-  case ServerActionTypes.GET_USER_SUCCESS:
+  case ServerActionTypes.GET_USERS_SUCCESS:
+    mergeUsers(action.users);
     break;
-  case ServerActionTypes.GET_USER_ERROR:
+  case ServerActionTypes.GET_USERS_ERROR:
     break;
   }
 
@@ -31,6 +32,12 @@ UserStore.dispatchToken = AppDispatcher.register(payload => {
 
 var createUser = (email) => {
   _state = _state.updateIn(['users'], list => list.concat({email}));
+};
+
+var mergeUsers = (newUsers) => {
+  _state = _state.updateIn(['users'], users => {
+    return users.concat(newUsers);
+  });
 };
 
 export default UserStore;

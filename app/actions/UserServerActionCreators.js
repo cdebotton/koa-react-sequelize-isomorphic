@@ -7,7 +7,7 @@ export default {
   getUsersSuccess(user) {
     AppDispatcher.handleServerAction({
       type: ServerActionTypes.GET_USERS_SUCCESS,
-      user: user
+      users: user
     });
   },
 
