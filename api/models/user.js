@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  var User = sequelize.defin('User', {
+  var User = sequelize.define('User', {
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
     email: DataTypes.STRING,

@@ -6,12 +6,12 @@ import Sequelize from "sequelize";
 import envConfig from "yaml-env-config";
 
 const env = process.env.NODE_ENV || 'development';
-var config = envConfig(__dirname + '/../../config/db.json', {
+var config = envConfig(__dirname + '/../../config', {
   absolute: true
 }).db;
 
-const {db, username, password} = config;
-var sequelize = new Sequelize(db, username, password, config);
+const {database, username, password} = config;
+var sequelize = new Sequelize(database, username, password, config);
 var db = {};
 
 fs
