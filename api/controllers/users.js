@@ -3,7 +3,7 @@ import {User} from "../models";
 export default (router) => {
   router
     .get('/users', function *(next) {
-      var users = yield User.findAll({
+      let users = yield User.findAll({
         attributes: ['id', 'email']
       });
 
@@ -11,14 +11,19 @@ export default (router) => {
     });
 
   router
-    .param('user', findUser)
-    .get('/users/:user', function *(next) {
-      this.body = this.user;
+    .post('/users', function *(next) {
+      let {email} = this.request;
+      let user = yield User.create({
+        email: email
+      });
+
+      this.body = user;
     });
 
   router
-    .post('/users', function *(next) {
-
+    .param('/user', findUser)
+    .get('/users/:user', function *(next) {
+      this.body = this.user;
     });
 
   router

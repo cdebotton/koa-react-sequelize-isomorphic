@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react/addons";
-import {RouteHandler} from "react-router";
+import {RouteHandler, Link} from "react-router";
 import AppStore from "../stores/AppStore";
 import StoreListenerMixin from "../mixins/StoreListenerMixin";
 import Head from "./Head";
@@ -47,6 +47,10 @@ var App = React.createClass({
         <div className="container">
           <h1 className={cx}>React Isomorphic Starter Kit</h1>
           <p>This is an example of an Isomorphic application written on React &amp; Flux.</p>
+          <nav>
+            <Link to="index">Home</Link>
+            <Link to="users">Users</Link>
+          </nav>
           <RouteHandler />
         </div>
         <script src={BUNDLE} />

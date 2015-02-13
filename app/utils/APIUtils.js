@@ -4,12 +4,9 @@ import AppServerActionCreators from "../actions/AppServerActionCreators";
 import path from "path";
 
 const TIMEOUT = 10000;
-const ENDPOINT_ROOT = 'http://localhost:3000/api/v1';
 
 export var getAPI = (endpoint) => {
-  let url = endpoint.indexOf('http://') === -1 ?
-    endpoint : path.join(ENDPOINT_ROOT, endpoint);
-
+  let url = makeUrl(endpoint);
   let request = superagent.get(url);
   let promise = makePromise(request);
 
@@ -17,7 +14,8 @@ export var getAPI = (endpoint) => {
 };
 
 export var postAPI = (endpoint, data) => {
-  let request = superagent.post(endpoint).send(data);
+  let url = makeUrl(endpoint);
+  let request = superagent.post(url).send(data);
   let promise = makePromise(request);
 
   return promise;
@@ -37,12 +35,21 @@ export var delAPI = (endpoint) => {
   return promise;
 };
 
+var makeUrl = (endpoint) => {
+  try {
+    return `${window.location.origin}/api/v1/${endpoint}`;
+  }
+  catch (err) {
+    return `http://localhost:${process.env.PORT || 3000}/api/v1/${endpoint}`;
+  }
+};
+
 var makePromise = (request) => {
   return new Promise((resolve, reject) => {
     request
       .set('Accept', 'application/json')
       .timeout(TIMEOUT)
       .on('error', reject)
-      .end(resolve);
+      .end(res => resolve(res.body));
   });
 };
