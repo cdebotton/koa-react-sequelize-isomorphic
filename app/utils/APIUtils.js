@@ -29,7 +29,8 @@ export var putAPI = (endpoint) => {
 };
 
 export var delAPI = (endpoint) => {
-  let request = superagent.del(endpoint);
+  let url = makeUrl(endpoint);
+  let request = superagent.del(url);
   let promise = makePromise(request);
 
   return promise;

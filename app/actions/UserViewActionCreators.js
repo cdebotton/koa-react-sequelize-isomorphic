@@ -12,5 +12,14 @@ export default {
     });
 
     UserAPI.createUser(email);
+  },
+
+  destroyUser(id) {
+    AppDispatcher.handleViewAction({
+      type: ViewActionTypes.DESTROY_USER,
+      id: id
+    });
+
+    UserAPI.destroyUser(id);
   }
 };

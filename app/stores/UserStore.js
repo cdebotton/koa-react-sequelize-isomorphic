@@ -25,6 +25,10 @@ UserStore.dispatchToken = AppDispatcher.register(payload => {
     break;
   case ServerActionTypes.GET_USERS_ERROR:
     break;
+
+  case ViewActionTypes.DESTROY_USER:
+    destroyUser(action.id);
+    break;
   }
 
   UserStore.emitChange();
@@ -40,6 +44,14 @@ var mergeUsers = (newUsers) => {
     let toAdd = newUsers.filter(user => ids.indexOf(user.id) === -1);
 
     return users.concat(toAdd);
+  });
+};
+
+var destroyUser = (id) => {
+  _state = _state.updateIn(['users'], users => {
+    let index = users.findIndex(user => user.id === id);
+
+    return users.splice(index, 1);
   });
 };
 

@@ -18,5 +18,6 @@ export var ViewActionTypes = keyMirror({
   ACTIVATE: null,
   DEACTIVATE: null,
 
-  CREATE_USER: null
+  CREATE_USER: null,
+  DESTROY_USER: null
 });

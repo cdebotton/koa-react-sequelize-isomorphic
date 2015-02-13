@@ -21,7 +21,7 @@ export default (router) => {
     });
 
   router
-    .param('/user', findUser)
+    .param('user', findUser)
     .get('/users/:user', function *(next) {
       this.body = this.user;
     });
@@ -35,7 +35,8 @@ export default (router) => {
   router
     .param('user', findUser)
     .del('/users/:user', function *(next) {
-
+      this.user.destroy();
+      this.body = {};
     });
 
   return router;
@@ -43,7 +44,7 @@ export default (router) => {
 
 function *findUser(userId, next) {
   this.user = yield User.find({
-    where: {userId: userId},
+    where: {id: userId},
     attributes: ['id', 'email']
   });
 

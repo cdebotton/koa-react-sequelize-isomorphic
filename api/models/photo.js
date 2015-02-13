@@ -6,6 +6,7 @@ export default (sequelize, DataTypes) => {
     description: DataTypes.TEXT
   }, {
     classMethods: {
+      timestamps: true,
       associate(models) {
         Photo.belongsTo(models.User);
       }

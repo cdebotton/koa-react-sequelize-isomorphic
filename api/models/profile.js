@@ -1,7 +1,5 @@
 export default (sequelize, DataTypes) => {
   var Profile = sequelize.define('Profile', {
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
     firstName: DataTypes.STRING,
     middleName: DataTypes.STRING,
     lastName: DataTypes.STRING,
@@ -9,6 +7,7 @@ export default (sequelize, DataTypes) => {
     biography: DataTypes.TEXT
   }, {
     classMethods: {
+      timestamps: true,
       associate(models) {
         Profile.belongsTo(models.User);
       }

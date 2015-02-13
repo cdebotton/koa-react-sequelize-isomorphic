@@ -33,6 +33,13 @@ var UsersRoute = React.createClass({
   },
 
   renderUserListItem(user, key) {
+    var handleDestroy = (id) => {
+      return (event) => {
+        event.preventDefault();
+        UserViewActionCreators.destroyUser(id);
+      }
+    };
+
     return (
       <li key={key}>
         <i className="fa fa-users" />
@@ -41,6 +48,13 @@ var UsersRoute = React.createClass({
         }
         {!user.id &&
           user.email
+        }
+        {user.id &&
+          <button
+            type="button"
+            onClick={handleDestroy(user.id)}>
+            Delete
+          </button>
         }
       </li>
     );
@@ -55,11 +69,16 @@ var UsersRoute = React.createClass({
         <RouteHandler />
         <h3>User List</h3>
         <form onSubmit={this.handleSubmit}>
-          <input type="email" placeholder="email" valueLink={this.linkState('email')} />
+          <input
+            type="email"
+            placeholder="email"
+            valueLink={this.linkState('email')} />
           <button type="submit">Create user</button>
         </form>
         {users.length > 0 &&
-          <ul className="users">{users.map(this.renderUserListItem)}</ul>
+          <ul className="users">
+            {users.map(this.renderUserListItem)}
+          </ul>
         }
         {users.length === 0 &&
           <p>No users.</p>
