@@ -1,6 +1,6 @@
 'use strict';
 
-import {FluxStore} from "../utils/StoreUtils";
+import {FluxStore} from "../utils/FluxUtils";
 import AppDispatcher from "../dispatcher/AppDispatcher";
 import Immutable from "immutable";
 

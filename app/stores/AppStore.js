@@ -1,25 +1,23 @@
 'use strict';
 
 import AppDispatcher from "../dispatcher/AppDispatcher";
-import {FluxStore} from "../utils/StoreUtils";
+import {FluxStore} from "../utils/FluxUtils";
 
 class AppStore extends FluxStore {
+  registerListeners() {
+    return [AppActionCreators];
+  }
+
   constructor() {
-    super(this);
+    super( this );
 
     this.toggle = false;
-
-    this.listenTo({
-      'TOGGLE': 'onToggle',
-      'ACTIVATE': 'onActivate',
-      'DEACTIVATE': 'onDeactivate'
-    });
   }
 
   getState() {
-    let {toggle} = this;
+    let { toggle } = this;
 
-    return {toggle};
+    return { toggle };
   }
 
   onToggle() {

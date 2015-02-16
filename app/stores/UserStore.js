@@ -1,8 +1,7 @@
 import {ServerActionTypes, ViewActionTypes} from "../constants/ActionTypes";
 import AppDispatcher from "../dispatcher/AppDispatcher";
-import {FluxStore} from "../utils/StoreUtils";
+import {FluxStore} from "../utils/FluxUtils";
 import Immutable from "immutable";
-
 
 class UserStore extends FluxStore {
   constructor() {

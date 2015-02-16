@@ -1,4 +1,7 @@
-import {User} from "../models";
+import {
+  User,
+  Profile
+} from "../models";
 
 export default (router) => {
   router
@@ -13,6 +16,7 @@ export default (router) => {
   router
     .post('/users', function *(next) {
       let {email} = this.request.body;
+
       let user = yield User.create({
         email: email
       });

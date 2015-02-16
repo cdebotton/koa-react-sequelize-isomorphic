@@ -5,10 +5,39 @@ import {EventEmitter} from "events";
 import AppDispatcher from "../dispatcher/AppDispatcher";
 import Immutable from "immutable";
 
+require('babel/polyfill');
+
 const CHANGE_EVENT = 'change';
+const NOOP = function() {};
+const BUILT_IN_METHODS = Object.getOwnPropertyNames(NOOP.prototype);
+
 var storeCache = Immutable.Map();
 var toString = (obj) => Object.prototype.toString.call(obj);
-var isFunc = (obj) => toString(obj) === '[object Function]';
+var isFn = (obj) => toString(obj) === '[object Function]';
+var on = (str) => 'on' + str.charAt(0).toUpperCase() + str.slice(1);
+
+export class FluxActionCreators {
+  constructor(ctx) {
+    let name = ctx.constructor.name;
+    let keys = Reflect.ownKeys(ctx.constructor.prototype)
+      .filter(key => BUILT_IN_METHODS.indexOf(key) === -1);
+
+    this.handlers = {};
+
+    for (let key of keys) {
+      let fn = ctx[key];
+      let sym = Symbol(`action creator ${name}.prototype.${key}`);
+
+      this.handlers[sym] = on(key);
+
+      ctx[key] = fn.bind(this, sym);
+    }
+  }
+
+  dispatch() {
+
+  }
+}
 
 export class FluxStore extends EventEmitter {
   constructor(context) {
@@ -37,7 +66,7 @@ export class FluxStore extends EventEmitter {
       let index = keys.indexOf(type);
       let fn = this[actions[type]];
 
-      if (keys.indexOf(type) > -1 && isFunc(fn)) {
+      if (keys.indexOf(type) > -1 && isFn(fn)) {
         let result = fn.call(this, action);
         if (result === false) return false;
       }

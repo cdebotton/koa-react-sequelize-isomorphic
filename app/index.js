@@ -5,7 +5,7 @@ import router from "./router";
 import Promise from "bluebird";
 import ReactRouter from "react-router";
 
-require('6to5/polyfill');
+require('babel/polyfill');
 
 var firstCall = true;
 
