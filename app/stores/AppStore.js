@@ -1,5 +1,6 @@
 'use strict';
 
+import AppActionCreators from "../actions/AppActionCreators";
 import AppDispatcher from "../dispatcher/AppDispatcher";
 import {FluxStore} from "../utils/FluxUtils";
 
@@ -8,10 +9,8 @@ class AppStore extends FluxStore {
     return [AppActionCreators];
   }
 
-  constructor() {
-    super( this );
-
-    this.toggle = false;
+  getInitialState() {
+    return {toggle: false};
   }
 
   getState() {

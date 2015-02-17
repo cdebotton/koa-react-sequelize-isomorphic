@@ -2,7 +2,7 @@
 
 import React from "react";
 import TumblrAPI from "../utils/TumblrAPI";
-import AppViewActionCreators from "../actions/AppViewActionCreators";
+import AppActionCreators from "../actions/AppActionCreators";
 import PostStore from "../stores/PostStore";
 import StoreListenerMixin from "../mixins/StoreListenerMixin";
 
@@ -22,15 +22,15 @@ var IndexRoute = React.createClass({
   },
 
   onActivate() {
-    AppViewActionCreators.activate();
+    AppActionCreators.activate();
   },
 
   onDeactivate() {
-    AppViewActionCreators.deactivate();
+    AppActionCreators.deactivate();
   },
 
   onToggle() {
-    AppViewActionCreators.toggle();
+    AppActionCreators.toggle();
   },
 
   renderPhotoData(postId, photo, key) {

@@ -3,6 +3,7 @@
 import assign from "object-assign";
 import {EventEmitter} from "events";
 import AppDispatcher from "../dispatcher/AppDispatcher";
+import invariant from "react/lib/invariant";
 import Immutable from "immutable";
 
 require('babel/polyfill');
@@ -14,7 +15,27 @@ const BUILT_IN_METHODS = Object.getOwnPropertyNames(NOOP.prototype);
 var storeCache = Immutable.Map();
 var toString = (obj) => Object.prototype.toString.call(obj);
 var isFn = (obj) => toString(obj) === '[object Function]';
+var isObj = (obj) => toString(obj) === '[object Object]';
 var on = (str) => 'on' + str.charAt(0).toUpperCase() + str.slice(1);
+var mergeArgs = (arg, args) => args.length > 0 ? [arg].concat(args) : arg;
+
+var createHandler = (sym) => {
+  return {
+    handleViewAction(arg, ...args) {
+      AppDispatcher.handleViewAction({
+        type: sym,
+        body: mergeArgs(arg, args)
+      });
+    },
+
+    handleServerAction(arg, ...args) {
+      AppDispatcher.handleServerAction({
+        type: sym,
+        body: mergeArgs(arg, args)
+      });
+    }
+  };
+};
 
 export class FluxActionCreators {
   constructor(ctx) {
@@ -22,28 +43,54 @@ export class FluxActionCreators {
     let keys = Reflect.ownKeys(ctx.constructor.prototype)
       .filter(key => BUILT_IN_METHODS.indexOf(key) === -1);
 
-    this.handlers = {};
+    this.__HANDLERS__ = {};
 
     for (let key of keys) {
       let fn = ctx[key];
       let sym = Symbol(`action creator ${name}.prototype.${key}`);
+      let handler = createHandler(sym);
 
-      this.handlers[sym] = on(key);
+      this.__HANDLERS__[sym] = on(key);
 
-      ctx[key] = fn.bind(this, sym);
+      ctx[key] = fn.bind(handler);
     }
-  }
-
-  dispatch() {
-
   }
 }
 
 export class FluxStore extends EventEmitter {
-  constructor(context) {
+  constructor() {
     let {name} = this.constructor;
-    storeCache = storeCache.set(name, this.getState.bind(context));
-    context.setMaxListeners(0);
+    let listeners = this.registerListeners();
+
+    invariant(
+      Array.isArray(listeners),
+      `${name}.prototype.registerListeners(...) must return an array of ` +
+      `ActionCreators to bind.`
+    );
+
+    storeCache = storeCache.set(name, this.getState.bind(this));
+    this.setMaxListeners(0);
+
+    if (listeners.length > 0) {
+      let handlers = listeners.reduce((memo, listener) => {
+        if (isObj(listener.__HANDLERS__)) {
+          return assign({}, memo, listener.__HANDLERS__);
+        }
+
+        return memo;
+      }, {});
+
+      this.dispatchToken = AppDispatcher.register(payload => {
+        let {action} = payload;
+        let {type} = action;
+
+
+      });
+    }
+  }
+
+  registerListeners() {
+    return [];
   }
 
   emitChange() {

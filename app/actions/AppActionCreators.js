@@ -8,20 +8,20 @@ class AppActionCreators extends FluxActionCreators {
     super(this);
   }
 
-  request(symbol, data) {
-    this.view(symbol, data);
+  request(data) {
+    this.handleViewAction(data);
   }
 
-  toggle(symbol, data) {
-    this.view(symbol, data);
+  toggle(data) {
+    this.handleViewAction(data);
   }
 
-  activate(symbol, data) {
-    this.view(symbol, data);
+  activate(data) {
+    this.handleViewAction(data);
   }
 
-  deactivate(symbol, data) {
-    this.view(symbol, data);
+  deactivate(data) {
+    this.handleViewAction(data);
   }
 }
 
