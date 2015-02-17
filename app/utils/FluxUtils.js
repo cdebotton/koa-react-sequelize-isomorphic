@@ -43,14 +43,14 @@ export class FluxActionCreators {
     let keys = Reflect.ownKeys(ctx.constructor.prototype)
       .filter(key => BUILT_IN_METHODS.indexOf(key) === -1);
 
-    this.__HANDLERS__ = {};
+    this.__HANDLERS__ = [];
 
     for (let key of keys) {
       let fn = ctx[key];
       let sym = Symbol(`action creator ${name}.prototype.${key}`);
       let handler = createHandler(sym);
 
-      this.__HANDLERS__[sym] = on(key);
+      this.__HANDLERS__.push([sym, on(key)]);
 
       ctx[key] = fn.bind(handler);
     }
@@ -60,7 +60,9 @@ export class FluxActionCreators {
 export class FluxStore extends EventEmitter {
   constructor() {
     let {name} = this.constructor;
+    let handlers = {};
     let listeners = this.registerListeners();
+    let state = this.getInitialState();
 
     invariant(
       Array.isArray(listeners),
@@ -68,25 +70,57 @@ export class FluxStore extends EventEmitter {
       `ActionCreators to bind.`
     );
 
+    invariant(
+      isObj(state),
+      `${name}.prototype.getInitialState(...) must return and object.`
+    );
+
     storeCache = storeCache.set(name, this.getState.bind(this));
     this.setMaxListeners(0);
+    this.state = Immutable.fromJS(state);
 
-    if (listeners.length > 0) {
-      let handlers = listeners.reduce((memo, listener) => {
-        if (isObj(listener.__HANDLERS__)) {
-          return assign({}, memo, listener.__HANDLERS__);
+    listeners.reduce((memo, listener) => {
+      try {
+        listener.__HANDLERS__.forEach(handler => {
+          let [key, fn] = handler;
+          memo[key] = fn;
+        });
+      }
+      catch (err) {
+        return memo;
+      }
+    }, handlers);
+
+    this.dispatchToken = AppDispatcher.register(payload => {
+      let {action} = payload;
+      let {type} = action;
+      let responder = this[handlers[type]];
+
+
+      if (handlers[type] && responder) {
+        let result = responder.apply(this, action.body);
+
+        if (result === false) {
+          return false;
         }
 
-        return memo;
-      }, {});
+        this.emitChange();
+      }
+    });
+  }
 
-      this.dispatchToken = AppDispatcher.register(payload => {
-        let {action} = payload;
-        let {type} = action;
+  getInitialState() {
+    return Immutable.Map();
+  }
 
+  getState() {
+    let {state} = this;
 
-      });
-    }
+    return state.toJS();
+  }
+
+  setState(params) {
+    this.state = this.state.merge(params);
   }
 
   registerListeners() {

@@ -13,22 +13,18 @@ class AppStore extends FluxStore {
     return {toggle: false};
   }
 
-  getState() {
-    let { toggle } = this;
-
-    return { toggle };
-  }
-
   onToggle() {
-    this.toggle = !this.toggle;
+    let state = this.getState();
+    let {toggle} = state;
+    this.setState({toggle: !toggle});
   }
 
   onActivate() {
-    this.toggle = true;
+    this.setState({toggle: true});
   }
 
   onDeactivate() {
-    this.toggle = false;
+    this.setState({toggle: false});
   }
 };
 
