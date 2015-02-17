@@ -1,11 +1,13 @@
 'use strict';
 
-import {FluxStore, injectIntoList} from "../utils/FluxUtils";
-import PostActionCreators from "../actions/PostActionCreators";
+import {
+  FluxStore,
+  injectIntoList
+} from "../utils/FluxUtils";
 
 class PostStore extends FluxStore {
   registerListeners() {
-    return [PostActionCreators];
+    return ['post'];
   }
 
   getInitialState() {

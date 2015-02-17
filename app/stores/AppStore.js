@@ -1,11 +1,10 @@
 'use strict';
 
-import AppActionCreators from "../actions/AppActionCreators";
 import {FluxStore} from "../utils/FluxUtils";
 
 class AppStore extends FluxStore {
   registerListeners() {
-    return [AppActionCreators];
+    return ['app'];
   }
 
   getInitialState() {

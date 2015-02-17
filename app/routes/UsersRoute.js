@@ -5,7 +5,7 @@ import UserAPI from "../utils/UserAPI";
 import UserStore from "../stores/UserStore";
 import {Link, RouteHandler} from "react-router";
 import StoreListenerMixin from "../mixins/StoreListenerMixin";
-import UserViewActionCreators from "../actions/UserViewActionCreators";
+import UserActionCreators from "../actions/UserActionCreators";
 
 
 var {LinkedStateMixin} = React.addons;
@@ -30,14 +30,14 @@ var UsersRoute = React.createClass({
     event.preventDefault();
     var {email} = this.state;
     this.setState({ email: null });
-    UserViewActionCreators.createUser(email);
+    UserActionCreators.createUser(email);
   },
 
   renderUserListItem(user, key) {
     var handleDestroy = (id) => {
       return (event) => {
         event.preventDefault();
-        UserViewActionCreators.destroyUser(id);
+        UserActionCreators.destroyUser(id);
       }
     };
 

@@ -1,6 +1,5 @@
 import superagent from "superagent";
 import Promise from "bluebird";
-import AppServerActionCreators from "../actions/AppServerActionCreators";
 import path from "path";
 
 const TIMEOUT = 10000;

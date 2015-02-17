@@ -1,14 +1,14 @@
 'use strict';
 
 import {getAPI, postAPI, putAPI, delAPI} from "./APIUtils";
-import UserServerActionCreators from "../actions/UserServerActionCreators";
+import UserActionCreators from "../actions/UserActionCreators";
 
 export default {
   getUsers() {
     let {
       getUsersSuccess: onSuccess,
       getUsersError: onError
-    } = UserServerActionCreators;
+    } = UserActionCreators;
 
     return getAPI('users')
       .then(onSuccess)
@@ -19,7 +19,7 @@ export default {
     let {
       getUserSuccess: onSucces,
       getUserError: onError
-    } = UserServerActionCreators;
+    } = UserActionCreators;
 
     return getApi(`users/${id}`)
       .then(onSuccess)
@@ -30,7 +30,7 @@ export default {
     let {
       postUserSuccess: onSuccess,
       postUserError: onError
-    } = UserServerActionCreators;
+    } = UserActionCreators;
 
     return postAPI('users', {email: email})
       .then(onSuccess)
@@ -41,7 +41,7 @@ export default {
     let {
       delUserSuccess: onSuccess,
       delUserError: onError
-    } = UserServerActionCreators;
+    } = UserActionCreators;
 
     return delAPI(`users/${id}`)
       .then(onSuccess)

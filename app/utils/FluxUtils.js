@@ -8,16 +8,30 @@ import Immutable from "immutable";
 
 require('babel/polyfill');
 
+/**
+ * Module constants
+ */
+
 const CHANGE_EVENT = 'change';
 const NOOP = function() {};
 const BUILT_IN_METHODS = Object.getOwnPropertyNames(NOOP.prototype);
+
+
+/**
+ * Module helper functions
+ */
 
 var storeCache = Immutable.Map();
 var toString = (obj) => Object.prototype.toString.call(obj);
 var isFn = (obj) => toString(obj) === '[object Function]';
 var isObj = (obj) => toString(obj) === '[object Object]';
+var isStr = (obj) => toString(obj) === '[object String]';
 var on = (str) => 'on' + str.charAt(0).toUpperCase() + str.slice(1);
 var mergeArgs = (arg, args) => args.length > 0 ? [arg].concat(args) : arg;
+
+/**
+ * Generate the context for action handlers.
+ */
 
 var createHandler = (sym) => {
   return {
@@ -36,6 +50,35 @@ var createHandler = (sym) => {
     }
   };
 };
+
+/**
+ * Dynamically require ActionCreators.
+ */
+
+var getCreator = (listener, storeName) => {
+  if (isStr(listener)) {
+    let name = listener.charAt(0).toUpperCase() +
+      listener.slice(1) +
+      'ActionCreators';
+    try {
+      return require(`../actions/${name}`);
+    }
+    catch (err) {
+      console.warn(
+        `${storeName}.prototype.registerListeners(...): ` +
+        `Named ActionCreator '${listener}' doesn't exist, please ` +
+        `create '../actions/${name}.js'.`
+      );
+    }
+  }
+  else {
+    return listener;
+  }
+};
+
+/**
+ * Base for Flux ActionCreators.
+ */
 
 export class FluxActionCreators {
   constructor() {
@@ -57,11 +100,17 @@ export class FluxActionCreators {
   }
 }
 
+/**
+ * Base for Flux Store
+ */
+
 export class FluxStore extends EventEmitter {
   constructor() {
     let {name} = this.constructor;
     let handlers = {};
-    let listeners = this.registerListeners();
+    let listeners = this.registerListeners()
+      .map(listener => getCreator(listener, name));
+
     let state = this.getInitialState();
 
     invariant(
@@ -158,6 +207,10 @@ export class FluxStore extends EventEmitter {
   }
 }
 
+/**
+ * Inject elements into immutable list.
+ */
+
 export var injectIntoList = (list, results) => {
   list = Immutable.fromJS(list);
 
@@ -167,12 +220,20 @@ export var injectIntoList = (list, results) => {
   return list.concat(Immutable.fromJS(toAdd));
 };
 
+/**
+ * Determine if list contains an ID.
+ */
+
 export var isInList = (list, item) => {
   let ids = list.map(item => item.id || item.get('id'));
   let id = item.id || item.get('id');
 
   return ids.indexOf(id) === -1;
 };
+
+/**
+ * Take snapshot of the current state of the stores.
+ */
 
 export var snapshot = () => {
   let snapshot = storeCache.reduce((memo, state, key) => {
@@ -188,6 +249,10 @@ export var snapshot = () => {
 
   return snapshot;
 };
+
+/**
+ * Inject a snapshot into registered stores.
+ */
 
 export var hydrate = (snapshot) => {
 
