@@ -1,7 +1,6 @@
 'use strict';
 
 import AppActionCreators from "../actions/AppActionCreators";
-import AppDispatcher from "../dispatcher/AppDispatcher";
 import {FluxStore} from "../utils/FluxUtils";
 
 class AppStore extends FluxStore {
@@ -16,6 +15,7 @@ class AppStore extends FluxStore {
   onToggle() {
     let state = this.getState();
     let {toggle} = state;
+
     this.setState({toggle: !toggle});
   }
 

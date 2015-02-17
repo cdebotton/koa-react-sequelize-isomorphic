@@ -38,21 +38,21 @@ var createHandler = (sym) => {
 };
 
 export class FluxActionCreators {
-  constructor(ctx) {
-    let name = ctx.constructor.name;
-    let keys = Reflect.ownKeys(ctx.constructor.prototype)
+  constructor() {
+    let name = this.constructor.name;
+    let keys = Reflect.ownKeys(this.constructor.prototype)
       .filter(key => BUILT_IN_METHODS.indexOf(key) === -1);
 
     this.__HANDLERS__ = [];
 
     for (let key of keys) {
-      let fn = ctx[key];
+      let fn = this[key];
       let sym = Symbol(`action creator ${name}.prototype.${key}`);
       let handler = createHandler(sym);
 
       this.__HANDLERS__.push([sym, on(key)]);
 
-      ctx[key] = fn.bind(handler);
+      this[key] = fn.bind(handler);
     }
   }
 }
@@ -158,6 +158,8 @@ export class FluxStore extends EventEmitter {
 }
 
 export var injectIntoList = (list, results) => {
+  list = Immutable.fromJS(list);
+
   let ids = list.map(item => item.id || item.get('id'));
   let toAdd = results.filter(item => ids.indexOf(item.id) === -1);
 

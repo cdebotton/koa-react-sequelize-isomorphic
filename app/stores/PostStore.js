@@ -1,27 +1,24 @@
 'use strict';
 
 import {FluxStore, injectIntoList} from "../utils/FluxUtils";
-import AppDispatcher from "../dispatcher/AppDispatcher";
+import PostActionCreators from "../actions/PostActionCreators";
 import Immutable from "immutable";
 
 class PostStore extends FluxStore {
-  constructor() {
-    super(this);
-    this.posts = Immutable.List();
-    this.listenTo({
-      'REQUEST_RESOURCE_SUCCESS': 'onRequestResourceSuccess'
-    });
+  registerListeners() {
+    return [PostActionCreators];
   }
 
-  getState() {
-    let posts = this.posts.toJS();
-
-    return { posts };
+  getInitialState() {
+    return {posts: []};
   }
 
-  onRequestResourceSuccess({body}) {
-    let {posts} = body.response;
-    this.posts = injectIntoList(this.posts, posts);
+  onGetPostsSuccess(...postsToAdd) {
+    let state = this.getState();
+    let {posts} = state;
+    let mergedList = injectIntoList(posts, postsToAdd);
+
+    this.setState({posts: mergedList});
   }
 }
 
