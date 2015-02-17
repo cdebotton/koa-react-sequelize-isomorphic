@@ -76,6 +76,20 @@ export class FluxStore extends EventEmitter {
   }
 }
 
+export var injectIntoList = (list, results) => {
+  let ids = list.map(item => item.id || item.get('id'));
+  let toAdd = results.filter(item => ids.indexOf(item.id) === -1);
+
+  return list.concat(Immutable.fromJS(toAdd));
+};
+
+export var isInList = (list, item) => {
+  let ids = list.map(item => item.id || item.get('id'));
+  let id = item.id || item.get('id');
+
+  return ids.indexOf(id) === -1;
+};
+
 export var snapshot = () => {
   let snapshot = storeCache.reduce((memo, state, key) => {
     try {

@@ -2,7 +2,6 @@
 
 import React from "react";
 import TumblrAPI from "../utils/TumblrAPI";
-import AppActionCreators from "../actions/AppActionCreators";
 import AppViewActionCreators from "../actions/AppViewActionCreators";
 import PostStore from "../stores/PostStore";
 import StoreListenerMixin from "../mixins/StoreListenerMixin";
@@ -54,8 +53,9 @@ var IndexRoute = React.createClass({
       MsAnimationDelay: delay
     };
 
+
     return (
-      <li key={[key, post.id].join('//')} className="post" style={styles}>
+      <li key={post.id} className="post" style={styles}>
         {post.caption &&
           <span dangerouslySetInnerHTML={{__html: post.caption}} />
         }

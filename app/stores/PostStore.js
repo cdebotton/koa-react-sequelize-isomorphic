@@ -1,6 +1,6 @@
 'use strict';
 
-import {FluxStore} from "../utils/FluxUtils";
+import {FluxStore, injectIntoList} from "../utils/FluxUtils";
 import AppDispatcher from "../dispatcher/AppDispatcher";
 import Immutable from "immutable";
 
@@ -21,7 +21,7 @@ class PostStore extends FluxStore {
 
   onRequestResourceSuccess({body}) {
     let {posts} = body.response;
-    this.posts = this.posts.concat(posts);
+    this.posts = injectIntoList(this.posts, posts);
   }
 }
 

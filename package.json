@@ -9,7 +9,9 @@
   "author": "pruno",
   "license": "ISC",
   "dependencies": {
-    "babel": "^4.0.1",
+    "babel": "^4.1.1",
+    "babel-core": "^4.1.1",
+    "babel-loader": "^4.0.0",
     "bluebird": "^2.9.8",
     "co": "^4.3.1",
     "flux": "^2.0.1",
@@ -44,7 +46,7 @@
     "pruno-http": "^2.0.2",
     "pruno-publish": "^1.0.3",
     "pruno-stylus": "^1.0.4",
-    "pruno-webpack": "^1.0.2",
+    "pruno-webpack": "^1.0.3",
     "react-hot-loader": "^1.1.4",
     "webpack": "^1.5.3",
     "webpack-dev-server": "^1.7.0"
