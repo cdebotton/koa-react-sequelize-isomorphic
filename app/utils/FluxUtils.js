@@ -1,10 +1,10 @@
 'use strict';
 
+import Immutable from "immutable";
 import assign from "object-assign";
 import {EventEmitter} from "events";
-import AppDispatcher from "../dispatcher/AppDispatcher";
 import invariant from "react/lib/invariant";
-import Immutable from "immutable";
+import AppDispatcher from "../dispatcher/AppDispatcher";
 
 require('babel/polyfill');
 
@@ -13,8 +13,8 @@ require('babel/polyfill');
  */
 
 const CHANGE_EVENT = 'change';
-const NOOP = function() {};
-const BUILT_IN_METHODS = Object.getOwnPropertyNames(NOOP.prototype);
+const noop = function() {};
+const BUILT_IN_METHODS = Object.getOwnPropertyNames(noop.prototype);
 
 
 /**
@@ -92,6 +92,8 @@ export class FluxActionCreators {
       let fn = this[key];
       let sym = Symbol(`action creator ${name}.prototype.${key}`);
       let handler = createHandler(sym);
+
+      console.log(handler.api);
 
       this.__HANDLERS__.push([sym, on(key)]);
 
@@ -255,5 +257,9 @@ export var snapshot = () => {
  */
 
 export var hydrate = (snapshot) => {
+
+};
+
+export var initialize = () => {
 
 };
