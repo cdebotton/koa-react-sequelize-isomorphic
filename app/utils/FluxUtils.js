@@ -93,12 +93,13 @@ export class FluxStore extends EventEmitter {
 
     this.dispatchToken = AppDispatcher.register(payload => {
       let {action} = payload;
-      let {type} = action;
+      let {type, body} = action;
       let responder = this[handlers[type]];
 
-
       if (handlers[type] && responder) {
-        let result = responder.apply(this, action.body);
+        body = Array.isArray(body) ? body : [body];
+
+        let result = responder.apply(this, body);
 
         if (result === false) {
           return false;

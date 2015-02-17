@@ -9,7 +9,7 @@ class PostActionCreators extends FluxActionCreators {
     let {response} = body;
     let {posts} = response;
 
-    this.handleServerAction(posts);
+    this.handleServerAction({posts});
   }
 
   getPostsError(err) {

@@ -2,7 +2,6 @@
 
 import {FluxStore, injectIntoList} from "../utils/FluxUtils";
 import PostActionCreators from "../actions/PostActionCreators";
-import Immutable from "immutable";
 
 class PostStore extends FluxStore {
   registerListeners() {
@@ -13,10 +12,10 @@ class PostStore extends FluxStore {
     return {posts: []};
   }
 
-  onGetPostsSuccess(...postsToAdd) {
+  onGetPostsSuccess(data) {
     let state = this.getState();
     let {posts} = state;
-    let mergedList = injectIntoList(posts, postsToAdd);
+    let mergedList = injectIntoList(posts, data.posts);
 
     this.setState({posts: mergedList});
   }
