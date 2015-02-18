@@ -1,22 +1,16 @@
-import {FluxActionCreators} from "../utils/FluxUtils";
+'use strict';
 
+import alt from "../alt";
 
-class AppActionCreators extends FluxActionCreators {
-  request(data) {
-    this.handleViewAction(data);
-  }
-
-  toggle(data) {
-    this.handleViewAction(data);
-  }
-
-  activate(data) {
-    this.handleViewAction(data);
-  }
-
-  deactivate(data) {
-    this.handleViewAction(data);
+class AppActionCreators {
+  constructor() {
+    this.generateActions(
+      'request',
+      'toggle',
+      'activate',
+      'deactivate'
+    );
   }
 }
 
-export default new AppActionCreators();
+export default alt.createActions(AppActionCreators);

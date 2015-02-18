@@ -1,29 +1,35 @@
 'use strict';
 
 import React from "react/addons";
-import UserAPI from "../utils/UserAPI";
 import UserStore from "../stores/UserStore";
 import {Link, RouteHandler} from "react-router";
-import StoreListenerMixin from "../mixins/StoreListenerMixin";
+import ListenerMixin from "alt/mixins/ListenerMixin";
 import UserActionCreators from "../actions/UserActionCreators";
 
 
 var {LinkedStateMixin} = React.addons;
 
 var UsersRoute = React.createClass({
-  mixins: [LinkedStateMixin, StoreListenerMixin(UserStore)],
+  mixins: [LinkedStateMixin, ListenerMixin],
 
   statics: {
     fetchData(params, query) {
-      return UserAPI.getUsers();
+      return UserActionCreators.getUsers();
     }
   },
 
-  getStateFromStores() {
-    var email = null;
-    var {users} = UserStore.getState();
+  getInitialState() {
+    let { users } = UserStore.getState();
 
-    return {email, users};
+    return { users };
+  },
+
+  componentWillMount() {
+    this.listenTo(UserStore, this.onChange);
+  },
+
+  onChange() {
+    this.setState(this.getInitialState());
   },
 
   handleSubmit(event) {

@@ -1,30 +1,26 @@
 'use strict';
 
-import {FluxStore} from "../utils/FluxUtils";
+import alt from "../alt";
+import AppActionCreators from "../actions/AppActionCreators";
 
-class AppStore extends FluxStore {
-  registerListeners() {
-    return ['app'];
-  }
-
-  getInitialState() {
-    return {toggle: false};
+class AppStore {
+  constructor() {
+    this.bindActions(AppActionCreators);
+    this.toggle = false;
   }
 
   onToggle() {
-    let state = this.getState();
-    let {toggle} = state;
-
-    this.setState({toggle: !toggle});
+    let { toggle } = this;
+    this.toggle = !toggle;
   }
 
   onActivate() {
-    this.setState({toggle: true});
+    this.toggle = true;
   }
 
   onDeactivate() {
-    this.setState({toggle: false});
+    this.toggle = false;
   }
-};
+}
 
-export default new AppStore();
+export default alt.createStore(AppStore);

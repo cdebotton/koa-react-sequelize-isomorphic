@@ -1,24 +1,32 @@
 'use strict';
 
 import React from "react";
-import TumblrAPI from "../utils/TumblrAPI";
-import AppActionCreators from "../actions/AppActionCreators";
 import PostStore from "../stores/PostStore";
-import StoreListenerMixin from "../mixins/StoreListenerMixin";
+import ListenerMixin from "alt/mixins/ListenerMixin";
+import AppActionCreators from "../actions/AppActionCreators";
+import PostActionCreators from "../actions/PostActionCreators";
 
 var IndexRoute = React.createClass({
-  mixins: [StoreListenerMixin(PostStore)],
+  mixins: [ListenerMixin],
 
   statics: {
     fetchData(params, query) {
-      return TumblrAPI.posts();
+      return PostActionCreators.getPosts();
     }
   },
 
-  getStateFromStores() {
-    var {posts} = PostStore.getState();
+  getInitialState() {
+    let { posts } = PostStore.getState();
 
-    return {posts};
+    return { posts };
+  },
+
+  componentWillMount() {
+    this.listenTo(PostStore, this.onChange);
+  },
+
+  onChange() {
+    this.setState(this.getInitialState());
   },
 
   onActivate() {

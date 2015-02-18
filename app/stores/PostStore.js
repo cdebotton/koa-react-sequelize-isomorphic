@@ -1,26 +1,21 @@
 'use strict';
 
-import {
-  FluxStore,
-  injectIntoList
-} from "../utils/FluxUtils";
+import alt from "../alt";
+import {injectIntoList} from "../utils/ListUtils";
+import PostActionCreators from "../actions/PostActionCreators";
 
-class PostStore extends FluxStore {
-  registerListeners() {
-    return ['post'];
-  }
-
-  getInitialState() {
-    return {posts: []};
+class PostStore {
+  constructor() {
+    this.bindActions(PostActionCreators);
+    this.posts = [];
   }
 
   onGetPostsSuccess(data) {
-    let state = this.getState();
-    let {posts} = state;
-    let mergedList = injectIntoList(posts, data.posts);
+    let { posts } = this;
+    let { posts: postsReceived } = data.response;
 
-    this.setState({posts: mergedList});
+    this.posts = injectIntoList(posts, postsReceived);
   }
 }
 
-export default new PostStore();
+export default alt.createStore(PostStore);

@@ -1,35 +1,27 @@
-import {
-  FluxStore,
-  injectIntoList
-} from "../utils/FluxUtils";
+'use strict';
 
-class UserStore extends FluxStore {
-  registerListeners() {
-    return ['user'];
+import alt from "../alt";
+import {injectIntoList} from "../utils/ListUtils";
+import UserActionCreators from "../actions/UserActionCreators";
+
+class UserStore {
+  constructor() {
+    this.bindActions(UserActionCreators);
+    this.users = [];
   }
 
-  getInitialState() {
-    return {users: []};
+  onGetUsersSuccess(response = []) {
+    let { users } = this;
+    this.users = injectIntoList(users, response);
   }
 
-  onGetUsersSuccess(data = {}) {
-    let state = this.getState();
-    let {users} = state;
-    let mergedUsers = injectIntoList(users, data.users);
-
-    this.setState({users: mergedUsers});
-  }
-
-  onCreateUser(data = {}) {
-    let state = this.getState();
-    let {users} = state;
-    let {email} = data;
-
-    this.setState({ users: users.concat({email}) });
+  onCreateUser(response = {}) {
+    let { users } = this;
+    this.users = users.concat(response);
   }
 }
 
-export default new UserStore();
+export default alt.createStore(UserStore);
 
 
 // import {ServerActionTypes, ViewActionTypes} from "../constants/ActionTypes";

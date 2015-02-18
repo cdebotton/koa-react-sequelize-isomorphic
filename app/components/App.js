@@ -1,25 +1,33 @@
 'use strict';
 
-import React from "react/addons";
-import {RouteHandler, Link} from "react-router";
-import AppStore from "../stores/AppStore";
-import StoreListenerMixin from "../mixins/StoreListenerMixin";
 import Head from "./Head";
+import React from "react/addons";
+import AppStore from "../stores/AppStore";
+import {RouteHandler, Link} from "react-router";
+import ListenerMixin from "alt/mixins/ListenerMixin";
 
 var {classSet} = React.addons;
 var {PropTypes} = React;
 
 var App = React.createClass({
-  mixins: [StoreListenerMixin(AppStore)],
+  mixins: [ListenerMixin],
 
   propTypes: {
     env: PropTypes.string
   },
 
-  getStateFromStores(props) {
-    let {toggle} = AppStore.getState();
+  getInitialState() {
+    let { toggle } = AppStore.getState();
 
-    return {toggle};
+    return { toggle };
+  },
+
+  componentWillMount() {
+    this.listenTo(AppStore, this.onChange);
+  },
+
+  onChange() {
+    this.setState(this.getInitialState());
   },
 
   getDefaultProps() {

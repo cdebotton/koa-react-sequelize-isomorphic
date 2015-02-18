@@ -1,20 +1,23 @@
-import {FluxActionCreators} from "../utils/FluxUtils";
+'use strict';
 
-class PostActionCreators extends FluxActionCreators {
+import alt from "../alt";
+import TumblrAPI from "../utils/TumblrAPI";
+
+class PostActionCreators {
+  constructor() {
+    this.generateActions(
+      'getPostsSuccess',
+      'getPostsError'
+    );
+  }
+
   getPosts() {
-    this.handleViewAction();
-  }
+    this.dispatch();
 
-  getPostsSuccess(body) {
-    let {response} = body;
-    let {posts} = response;
-
-    this.handleServerAction({posts});
-  }
-
-  getPostsError(err) {
-    this.handleServerAction(err);
+    return TumblrAPI.posts()
+      .then(this.actions.getPostsSuccess)
+      .catch(this.actions.getPostsError);
   }
 }
 
-export default new PostActionCreators();
+export default alt.createActions(PostActionCreators);

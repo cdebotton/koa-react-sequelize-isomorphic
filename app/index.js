@@ -2,7 +2,6 @@
 
 import React from "react";
 import router from "./router";
-import Promise from "bluebird";
 import ReactRouter from "react-router";
 
 require('babel/polyfill');

@@ -1,48 +1,43 @@
 'use strict';
 
-import {FluxActionCreators} from "../utils/FluxUtils";
+import alt from "../alt";
 import UserAPI from "../utils/UserAPI";
 
-class UserActionCreators extends FluxActionCreators {
+class UserActionCreators {
+  constructor() {
+    this.generateActions(
+      'getUsersSuccess',
+      'getUsersError',
+      'createUserSuccess',
+      'createUserError',
+      'destroyUserSuccess',
+      'destroyUserError'
+    );
+  }
+
   getUsers() {
-    this.handleViewAction();
-  }
+    this.dispatch();
 
-  getUsersSuccess(users) {
-    this.handleServerAction({users})
-  }
-
-  getUsersError(err) {
-    this.handleServerAction(err);
+    return UserAPI.getUsers()
+      .then(this.actions.getUsersSuccess)
+      .catch(this.actions.getUsersError);
   }
 
   createUser(email) {
-    this.handleViewAction({email});
+    this.dispatch({email});
 
-    UserAPI.createUser(email);
-  }
-
-  createUserSuccess(user) {
-    this.handleServerAction({user});
-  }
-
-  createUserError(err) {
-    this.handleServerAction({err});
+    return UserAPI.createUser(email)
+      .then(this.actions.createUserSuccess)
+      .catch(this.actions.createUserError);
   }
 
   destroyUser(id) {
-    this.handleViewAction({id});
+    this.dispatch({id});
 
-    UserAPI.destroyUser(id);
-  }
-
-  destroyUserSuccess(user) {
-    this.handleServerAction({user});
-  }
-
-  destroyUserError(err) {
-    this.handleServerAction({err});
+    return UserAPI.destroyUser(id)
+      .then(this.actions.destroyUserSuccess)
+      .catch(this.actions.destroyUserError);
   }
 }
 
-export default new UserActionCreators();
+export default alt.createActions(UserActionCreators);
