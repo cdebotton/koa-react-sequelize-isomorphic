@@ -25,7 +25,6 @@ class UserActionCreators {
 
   createUser(email) {
     this.dispatch({email});
-
     return UserAPI.createUser(email)
       .then(this.actions.createUserSuccess)
       .catch(this.actions.createUserError);

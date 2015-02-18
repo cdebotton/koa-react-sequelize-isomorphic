@@ -11,13 +11,20 @@ class UserStore {
   }
 
   onGetUsersSuccess(response = []) {
-    let { users } = this;
-    this.users = injectIntoList(users, response);
+    this.users = injectIntoList(this.users, response);
   }
 
   onCreateUser(response = {}) {
     let { users } = this;
-    this.users = users.concat(response);
+
+    this.users = this.users.concat(response);
+  }
+
+  onDestroyUser({id}) {
+    let ids = this.users.map(user => user.id);
+    let index = ids.indexOf(id);
+
+    this.users.splice(index, 1);
   }
 }
 

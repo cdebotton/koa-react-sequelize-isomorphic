@@ -25,7 +25,46 @@ app.use(bodyparser());
 app.use(json({ pretty: DEV }));
 app.use(serveStatic(path.join(__dirname, '../public')));
 app.use(mount('/api/v1', router.middleware()));
-app.use(isomorphic(path.join(__dirname, '../app/routes')));
+
+import React from "react";
+import routes from "../app/routes";
+import {create as createRouter} from "react-router";
+import alt from "../app/alt";
+
+var getState = (router) => {
+  return new Promise((resolve, reject) => {
+    router.run((...args) => {
+      let [Handler, state] = args;
+
+      let promises = state.routes.filter(route => route.handler.fetchData)
+        .map(route => route.handler.fetchData(state));
+
+      Promise.all(promises)
+        .then(data => resolve(args))
+        .catch(err => reject(err));
+    });
+  });
+};
+
+app.use(function *(next) {
+  let router = createRouter({
+    locations: this.req.url,
+    routes: routes,
+    onAbort(aborted) {
+      let {to, params, query} = aborted;
+      let url = Router.makePath(to, params, query);
+
+      this.redirect(url);
+    }
+  });
+
+  let [Handler, state] = yield getState(router);
+  state.snapshot = alt.takeSnapshot();
+
+  let markup = React.renderToString(<Handler {...state} />);
+
+  this.body = `<!doctype html>${markup}`;
+});
 
 app.listen(PORT, (err) => {
   if (err) throw err;
