@@ -27,9 +27,12 @@ app.use(serveStatic(path.join(__dirname, '../public')));
 app.use(mount('/api/v1', router.middleware()));
 
 import React from "react";
-import routes from "../app/routes";
-import {create as createRouter} from "react-router";
 import alt from "../app/alt";
+import cheerio from "cheerio";
+import routes from "../app/routes";
+import serialize from "serialize-javascript";
+import {create as createRouter} from "react-router";
+import escapeTextForBrowser from "react/lib/escapeTextForBrowser";
 
 var getState = (router) => {
   return new Promise((resolve, reject) => {
@@ -46,9 +49,29 @@ var getState = (router) => {
   });
 };
 
+let injectSnapshot = (markup) => {
+  return new Promise((resolve, reject) => {
+    try {
+      let $ = cheerio.load(markup);
+      let snapshotData = serialize(alt.takeSnapshot());
+      let bundle = DEV ? 'http://localhost:9000/dist/bundle.js' : '/bundle.min.js';
+
+      $('body').append(`<script id="flux-snapshot">var snapshot = ${snapshotData};</script>`);
+      $('body').append(`<script src="${bundle}"></script>`);
+      if (DEV) {
+        $('body').append('<script src="http://localhost:35729/livereload.js?snipver=1"></script>');
+      }
+      resolve($.html());
+    }
+    catch (err) {
+      reject(err);
+    }
+  });
+};
+
 app.use(function *(next) {
   let router = createRouter({
-    locations: this.req.url,
+    location: this.req.url,
     routes: routes,
     onAbort(aborted) {
       let {to, params, query} = aborted;
@@ -59,11 +82,11 @@ app.use(function *(next) {
   });
 
   let [Handler, state] = yield getState(router);
-  state.snapshot = alt.takeSnapshot();
 
   let markup = React.renderToString(<Handler {...state} />);
+  let snapshot = yield injectSnapshot(markup);
 
-  this.body = `<!doctype html>${markup}`;
+  this.body = `<!doctype html>${snapshot}`;
 });
 
 app.listen(PORT, (err) => {

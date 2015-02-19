@@ -5,7 +5,6 @@ import React from "react/addons";
 import AppStore from "../stores/AppStore";
 import {RouteHandler, Link} from "react-router";
 import ListenerMixin from "alt/mixins/ListenerMixin";
-import escapeTextForBrowser from "react/lib/escapeTextForBrowser";
 
 var {classSet} = React.addons;
 var {PropTypes} = React;
@@ -37,7 +36,7 @@ var App = React.createClass({
   },
 
   render() {
-    const {env, snapshot} = this.props;
+    const { env } = this.props;
     const DEV = env === 'development';
 
     var cx = classSet({
@@ -58,11 +57,6 @@ var App = React.createClass({
           </nav>
           <RouteHandler />
         </div>
-        <script dangerouslySetInnerHTML={{__html: 'var snapshot = ' + escapeTextForBrowser(snapshot) + ';'}} />
-        <script src={DEV ? 'http://localhost:9000/dist/bundle.js' : '/bundle.min.js'} />
-        {DEV &&
-          <script src="http://localhost:35729/livereload.js?snipver=1" />
-        }
       </body>
       </html>
     );
