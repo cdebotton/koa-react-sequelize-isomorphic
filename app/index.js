@@ -1,11 +1,11 @@
 'use strict';
 
+require('babel/polyfill');
+
 import React from "react";
 import router from "./router";
 import ReactRouter from "react-router";
-import alt from "./alt";
-
-require('babel/polyfill');
+import alt from "./alt"
 
 var renderData = (Handler, state) => {
   return (data) => React.render(<Handler {...state} />, document);
@@ -24,8 +24,10 @@ router.run((Handler, state) => {
     let promises = state.routes
       .filter(route => route.handler.fetchData)
       .map(route => route.handler.fetchData(state.params, state.query));
+
     Promise.all(promises);
   }
+
   let renderer = renderData(Handler, state);
   renderer();
 });
