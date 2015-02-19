@@ -36,9 +36,6 @@ var App = React.createClass({
   },
 
   render() {
-    const { env } = this.props;
-    const DEV = env === 'development';
-
     var cx = classSet({
       title: true,
       active: this.state.toggle
@@ -46,7 +43,7 @@ var App = React.createClass({
 
     return (
       <html lang="en">
-      <Head env={env} />
+      <Head {...this.props} />
       <body>
         <div className="container">
           <h1 className={cx}>React Isomorphic Starter Kit</h1>

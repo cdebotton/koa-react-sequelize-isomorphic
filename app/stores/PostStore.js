@@ -18,4 +18,4 @@ class PostStore {
   }
 }
 
-export default alt.createStore(PostStore);
+export default alt.createStore(PostStore, 'PostStore');

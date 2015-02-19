@@ -8,6 +8,7 @@ import ReactRouter from "react-router";
 import alt from "./alt"
 
 var renderData = (Handler, state) => {
+  state.env = process.env.NODE_ENV || 'development';
   return (data) => React.render(<Handler {...state} />, document);
 };
 

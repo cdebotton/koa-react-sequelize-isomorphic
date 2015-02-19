@@ -24,10 +24,18 @@ class UserActionCreators {
   }
 
   createUser(email) {
-    this.dispatch({email});
+    let {
+      createUserSuccess: onSuccess,
+      createUserError: onError
+    } = this.actions;
+
+    let user = { email };
+
+    this.dispatch(user);
+
     return UserAPI.createUser(email)
-      .then(this.actions.createUserSuccess)
-      .catch(this.actions.createUserError);
+      .then(onSuccess.bind(onSuccess, user))
+      .catch(onError.bind(onError, user));
   }
 
   destroyUser(id) {
