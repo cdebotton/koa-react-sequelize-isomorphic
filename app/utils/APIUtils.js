@@ -20,8 +20,9 @@ export var postAPI = (endpoint, data) => {
   return promise;
 };
 
-export var putAPI = (endpoint) => {
-  let request = superagent.put(endpoint).send(data);
+export var putAPI = (endpoint, data) => {
+    let url = makeUrl(endpoint);
+  let request = superagent.put(url).send(data);
   let promise = makePromise(request);
 
   return promise;

@@ -24,7 +24,7 @@ router.run((Handler, state) => {
   else {
     let promises = state.routes
       .filter(route => route.handler.fetchData)
-      .map(route => route.handler.fetchData(state.params, state.query));
+      .map(route => route.handler.fetchData(state));
 
     Promise.all(promises);
   }

@@ -1,10 +1,17 @@
 'use strict';
 
 import alt from "../alt";
+import assign from "object-assign";
 import {injectIntoList} from "../utils/ListUtils";
 import UserActionCreators from "../actions/UserActionCreators";
 
 class UserStore {
+  static getById(id) {
+    let { users } = this.getState();
+
+    return users.find(user => +user.id === +id);
+  }
+
   constructor() {
     this.bindActions(UserActionCreators);
     this.users = [];
@@ -12,6 +19,10 @@ class UserStore {
 
   onGetUsersSuccess(users = []) {
     this.users = injectIntoList(this.users, users);
+  }
+
+  onGetUserSuccess(user = {}) {
+    this.users = injectIntoList(this.users, [user]);
   }
 
   onCreateUser(user = {}) {
@@ -28,6 +39,19 @@ class UserStore {
     let index = this.users.indexOf(ref);
 
     this.users.splice(index, 1);
+  }
+
+  onUpdateUser({ user, params }) {
+    let index = this.users.map(user => +user.id)
+      .indexOf(+user.id);
+
+    assign(user, params);
+
+    this.users[index] = user;
+  }
+
+  onUpdateUserSuccess([ref, user]) {
+
   }
 
   onDestroyUser({ id }) {

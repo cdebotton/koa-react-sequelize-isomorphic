@@ -8,12 +8,15 @@ export default {
   },
 
   getUser(id) {
-    return getApi(`users/${id}`);
+    return getAPI(`users/${id}`);
   },
 
   createUser(email) {
-
     return postAPI('users', {email: email});
+  },
+
+  updateUser(user, params) {
+    return putAPI(`users/${user.id}`, params);
   },
 
   destroyUser(id) {

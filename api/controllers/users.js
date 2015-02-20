@@ -33,7 +33,12 @@ export default (router) => {
   router
     .param('user', findUser)
     .put('/users/:user', function *(next) {
+      let { body: data } = this.request;
+      let { user } = this;
 
+      user.email = data.email;
+
+      this.body = yield user.save();
     });
 
   router

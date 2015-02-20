@@ -8,8 +8,12 @@ class UserActionCreators {
     this.generateActions(
       'getUsersSuccess',
       'getUsersError',
+      'getUserSuccess',
+      'getUserError',
       'createUserSuccess',
       'createUserError',
+      'updateUserSuccess',
+      'updateUserError',
       'destroyUserSuccess',
       'destroyUserError'
     );
@@ -23,6 +27,14 @@ class UserActionCreators {
       .catch(this.actions.getUsersError);
   }
 
+  getUser(userId) {
+    this.dispatch();
+
+    return UserAPI.getUser(userId)
+      .then(this.actions.getUserSuccess)
+      .catch(this.actions.getUserError);
+  }
+
   createUser(email) {
     let {
       createUserSuccess: onSuccess,
@@ -34,6 +46,19 @@ class UserActionCreators {
     this.dispatch(user);
 
     return UserAPI.createUser(email)
+      .then(onSuccess.bind(onSuccess, user))
+      .catch(onError.bind(onError, user));
+  }
+
+  updateUser(user, params) {
+    let {
+      updateUserSuccess: onSuccess,
+      updateUserError: onError
+    } = this.actions;
+
+    this.dispatch({ user, params });
+
+    return UserAPI.updateUser(user, params)
       .then(onSuccess.bind(onSuccess, user))
       .catch(onError.bind(onError, user));
   }

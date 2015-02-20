@@ -61,7 +61,6 @@ var IndexRoute = React.createClass({
       MsAnimationDelay: delay
     };
 
-
     return (
       <li key={post.id} className="post" style={styles}>
         {post.caption &&
