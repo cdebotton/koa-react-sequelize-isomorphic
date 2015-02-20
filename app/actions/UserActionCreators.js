@@ -15,7 +15,8 @@ class UserActionCreators {
       'updateUserSuccess',
       'updateUserError',
       'destroyUserSuccess',
-      'destroyUserError'
+      'destroyUserError',
+      'setSortProperty'
     );
   }
 

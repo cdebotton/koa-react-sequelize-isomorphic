@@ -4,6 +4,7 @@ import moment from "moment";
 import React from "react/addons";
 import UserStore from "../stores/UserStore";
 import {Link, RouteHandler} from "react-router";
+import ListHeader from "../components/ListHeader";
 import ListenerMixin from "alt/mixins/ListenerMixin";
 import UserActionCreators from "../actions/UserActionCreators";
 
@@ -19,7 +20,7 @@ var UsersRoute = React.createClass({
   },
 
   getInitialState() {
-    let { users } = UserStore.getState();
+    let { users } = UserStore.getSorted();
 
     return { users };
   },
@@ -77,8 +78,6 @@ var UsersRoute = React.createClass({
   render() {
     var {users} = this.state;
 
-    users.sort((a, b) => a.id < b.id ? -1 : 1);
-
     return (
       <div className="users-router">
         <h2>Users Route</h2>
@@ -94,10 +93,10 @@ var UsersRoute = React.createClass({
         {users.length > 0 &&
           <ul className="users">
             <li className="titles">
-              <span className="header user-id">ID</span>
-              <span className="header user-link">Email</span>
-              <span className="header created-at">Created at</span>
-              <span className="header update-at">Last updated</span>
+              <ListHeader className="user-id" sortProperty="id">ID</ListHeader>
+              <ListHeader className="user-link" sortProperty="email">Email</ListHeader>
+              <ListHeader className="created-at" sortProperty="createdAt">Created at</ListHeader>
+              <ListHeader className="updated-at" sortProperty="updatedAt">Created at</ListHeader>
             </li>
             {users.map(this.renderUserListItem)}
           </ul>

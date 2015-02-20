@@ -12,9 +12,38 @@ class UserStore {
     return users.find(user => +user.id === +id);
   }
 
+  static getSorted() {
+    let {
+      users,
+      sortProperty: prop,
+      sortOrder: order
+    } = this.getState();
+
+    let dir = order === 'asc' ? -1 : 1;
+
+    users.sort((a, b) => a[prop] < b[prop] ? dir : (-1 * dir));
+
+    return { users };
+  }
+
   constructor() {
     this.bindActions(UserActionCreators);
+    this.sortProperty = 'id';
+    this.sortOrder = 'asc';
     this.users = [];
+  }
+
+  onSetSortProperty(prop) {
+    let isSame = prop === this.sortProperty;
+
+    this.sortProperty = prop;
+
+    if (! isSame) {
+      this.sortOrder = 'asc';
+    }
+    else {
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    }
   }
 
   onGetUsersSuccess(users = []) {
