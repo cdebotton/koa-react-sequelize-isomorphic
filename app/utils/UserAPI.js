@@ -20,21 +20,36 @@ export default {
     return getAPI('users')
       .then(data => {
         let normalized = normalize(data, arrayOf(User));
-        console.log(normalized);
+        console.log('normalized %o', normalized);
         return data;
       });
   },
 
   getUser(id) {
-    return getAPI(`users/${id}`);
+    return getAPI(`users/${id}`)
+      .then(data => {
+        let normalized = normalize(data, User);
+        console.log('normalized %o', normalized);
+        return data;
+      });
   },
 
   createUser(email) {
-    return postAPI('users', {email: email});
+    return postAPI('users', {email: email})
+      .then(data => {
+        let normalized = normalize(data, User);
+        console.log('normalized %o', normalized);
+        return data;
+      });
   },
 
   updateUser(user, params) {
-    return putAPI(`users/${user.id}`, params);
+    return putAPI(`users/${user.id}`, params)
+      .then(data => {
+        let normalized = normalize(data, User);
+        console.log('normalized %o', normalized);
+        return data;
+      });
   },
 
   destroyUser(id) {
