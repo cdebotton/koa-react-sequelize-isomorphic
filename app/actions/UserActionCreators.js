@@ -2,19 +2,6 @@
 
 import alt from "../alt";
 import UserAPI from "../utils/UserAPI";
-import { normalize, arrayOf, Schema } from "normalizr";
-
-let Profile = new Schema('Profiles');
-
-Profile.define({
-  User: User
-});
-
-let User = new Schema('Users');
-
-User.define({
-  Profile: Profile
-});
 
 class UserActionCreators {
   constructor() {
@@ -34,15 +21,16 @@ class UserActionCreators {
   }
 
   getUsers() {
+    let {
+      getUsersSuccess: onSuccess,
+      getUsersError: onError
+    } = this.actions;
+
     this.dispatch();
 
     return UserAPI.getUsers()
-      .then(data => {
-        let normalized = normalize(data, arrayOf(User));
-        console.log(normalized);
-        this.actions.getUsersSuccess(data);
-      })
-      .catch(this.actions.getUsersError);
+      .then(onSuccess)
+      .catch(onError);
   }
 
   getUser(userId) {

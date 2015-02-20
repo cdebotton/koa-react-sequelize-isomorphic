@@ -96,7 +96,7 @@ var UsersRoute = React.createClass({
               <ListHeader className="user-id" sortProperty="id">ID</ListHeader>
               <ListHeader className="user-link" sortProperty="email">Email</ListHeader>
               <ListHeader className="created-at" sortProperty="createdAt">Created at</ListHeader>
-              <ListHeader className="updated-at" sortProperty="updatedAt">Created at</ListHeader>
+              <ListHeader className="updated-at" sortProperty="updatedAt">Updated at</ListHeader>
             </li>
             {users.map(this.renderUserListItem)}
           </ul>
