@@ -61,11 +61,34 @@ var UserRoute = React.createClass({
       <div className="user-route">
         <h3>User Route</h3>
         <form onSubmit={this.handleSubmit}>
-          <input
-            ref="email"
-            type="email"
-            placeholder="email"
-            valueLink={this.linkState('email')} />
+          <fieldset>
+            <label htmlFor="user-email">Email</label>
+            <input
+              id="user-email"
+              ref="email"
+              type="email"
+              placeholder="email"
+              valueLink={this.linkState('email')} />
+          </fieldset>
+          <fieldset>
+            <label htmlFor="first-name">Name</label>
+            <input
+              id="first-name"
+              ref="firstName"
+              type="text"
+              placeholder="First name"
+              valueLink={this.linkState('firstName')} />
+            <input
+              ref="middleName"
+              type="text"
+              placeholder="Middle name"
+              valueLink={this.linkState('middleName')} />
+            <input
+              ref="lastName"
+              type="text"
+              placeholder="Last name"
+              valueLink={this.linkState('lastName')} />
+          </fieldset>
           <button type="submit">Save</button>
           <button type="reset" onClick={this.handleCancel}>Cancel</button>
         </form>

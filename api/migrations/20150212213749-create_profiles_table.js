@@ -17,7 +17,7 @@ module.exports = {
         middleName: DataTypes.STRING,
         lastName: DataTypes.STRING,
         biography: DataTypes.TEXT,
-        dataOfBirth: DataTypes.DATE
+        dateOfBirth: DataTypes.DATE
       }
     );
     done();

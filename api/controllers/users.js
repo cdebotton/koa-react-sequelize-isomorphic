@@ -7,7 +7,8 @@ export default (router) => {
   router
     .get('/users', function *(next) {
       let users = yield User.findAll({
-        attributes: ['id', 'email', 'createdAt', 'updatedAt']
+        attributes: ['id', 'email', 'createdAt', 'updatedAt'],
+        include: [Profile]
       });
 
       this.body = users;
@@ -21,7 +22,14 @@ export default (router) => {
         email: email
       });
 
-      this.body = user;
+      let profile = yield Profile.create({
+        UserId: user.id
+      });
+
+      this.body = yield User.find({
+        where: { id: user.id },
+        include: [Profile]
+      });
     });
 
   router
@@ -44,7 +52,9 @@ export default (router) => {
   router
     .param('user', findUser)
     .del('/users/:user', function *(next) {
-      this.user.destroy();
+      this.user.Profile.destroy().then(() => {
+        this.user.destroy();
+      });
       this.body = {};
     });
 
@@ -54,7 +64,8 @@ export default (router) => {
 function *findUser(userId, next) {
   this.user = yield User.find({
     where: {id: userId},
-    attributes: ['id', 'email', 'createdAt', 'updatedAt']
+    attributes: ['id', 'email', 'createdAt', 'updatedAt'],
+    include: [Profile]
   });
 
   if (! this.user) return this.status = 404;
