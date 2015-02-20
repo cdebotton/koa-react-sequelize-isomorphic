@@ -1,11 +1,11 @@
 'use strict';
 
+import moment from "moment";
 import React from "react/addons";
 import UserStore from "../stores/UserStore";
 import {Link, RouteHandler} from "react-router";
 import ListenerMixin from "alt/mixins/ListenerMixin";
 import UserActionCreators from "../actions/UserActionCreators";
-
 
 var {LinkedStateMixin} = React.addons;
 
@@ -48,16 +48,23 @@ var UsersRoute = React.createClass({
     };
 
     return (
-      <li key={key}>
-        <i className="fa fa-users" />
+      <li className="user" key={key}>
+        <i className="user-id fa fa-users">{user.id ? user.id : ''}</i>
         {user.id &&
-          <Link to="user" params={{userId: user.id}}>{user.email}</Link>
+          <Link className="user-link" to="user" params={{userId: user.id}}>{user.email}</Link>
+        }
+        {user.createdAt &&
+          <span className="created-at">{moment(user.createdAt).fromNow()}</span>
+        }
+        {user.updatedAt &&
+          <span className="updated-at">{moment(user.updatedAt).fromNow()}</span>
         }
         {!user.id &&
-          user.email
+          <span className="user-text">user.email</span>
         }
         {user.id &&
           <button
+            className="user-destroy"
             type="button"
             onClick={handleDestroy(user.id)}>
             Delete
@@ -73,7 +80,6 @@ var UsersRoute = React.createClass({
     return (
       <div className="users-router">
         <h2>Users Route</h2>
-        <RouteHandler />
         <h3>User List</h3>
         <form onSubmit={this.handleSubmit}>
           <input
@@ -82,8 +88,15 @@ var UsersRoute = React.createClass({
             valueLink={this.linkState('email')} />
           <button type="submit">Create user</button>
         </form>
+        <RouteHandler />
         {users.length > 0 &&
           <ul className="users">
+            <li className="titles">
+              <span className="header user-id">ID</span>
+              <span className="header user-link">Email</span>
+              <span className="header created-at">Created at</span>
+              <span className="header update-at">Last updated</span>
+            </li>
             {users.map(this.renderUserListItem)}
           </ul>
         }

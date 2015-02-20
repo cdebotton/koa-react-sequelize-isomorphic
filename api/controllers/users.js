@@ -7,7 +7,7 @@ export default (router) => {
   router
     .get('/users', function *(next) {
       let users = yield User.findAll({
-        attributes: ['id', 'email']
+        attributes: ['id', 'email', 'createdAt', 'updatedAt']
       });
 
       this.body = users;
@@ -54,7 +54,7 @@ export default (router) => {
 function *findUser(userId, next) {
   this.user = yield User.find({
     where: {id: userId},
-    attributes: ['id', 'email']
+    attributes: ['id', 'email', 'createdAt', 'updatedAt']
   });
 
   if (! this.user) return this.status = 404;

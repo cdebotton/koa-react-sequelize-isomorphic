@@ -48,7 +48,7 @@ var App = React.createClass({
         <div className="container">
           <h1 className={cx}>React Isomorphic Starter Kit</h1>
           <p>This is an example of an Isomorphic application written on React &amp; Flux.</p>
-          <nav>
+          <nav className="navigation">
             <Link to="index">Home</Link>
             <Link to="users">Users</Link>
           </nav>

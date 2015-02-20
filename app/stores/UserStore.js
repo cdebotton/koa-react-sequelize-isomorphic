@@ -51,7 +51,8 @@ class UserStore {
   }
 
   onUpdateUserSuccess([ref, user]) {
-
+    let index = this.users.indexOf(ref);
+    this.users[index] = user;
   }
 
   onDestroyUser({ id }) {
