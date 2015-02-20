@@ -77,6 +77,8 @@ var UsersRoute = React.createClass({
   render() {
     var {users} = this.state;
 
+    users.sort((a, b) => a.id < b.id ? -1 : 1);
+
     return (
       <div className="users-router">
         <h2>Users Route</h2>
