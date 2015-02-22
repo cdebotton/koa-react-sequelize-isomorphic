@@ -8,7 +8,7 @@ import UserActionCreators from "../actions/UserActionCreators";
 class UserStore {
   static getById(id) {
     let { users } = this.getState();
-    let user = users.find(u => u.id == id);
+    let user = users.find(u => u.id === id);
 
     return assign({}, user);
   }
