@@ -8,8 +8,9 @@ import UserActionCreators from "../actions/UserActionCreators";
 class UserStore {
   static getById(id) {
     let { users } = this.getState();
+    let user = users.find(u => u.id == id);
 
-    return users.find(user => +user.id === +id);
+    return assign({}, user);
   }
 
   static getSorted() {
@@ -20,10 +21,11 @@ class UserStore {
     } = this.getState();
 
     let dir = order === 'asc' ? -1 : 1;
+    let userClone = users.slice(0);
 
-    users.sort((a, b) => a[prop] < b[prop] ? dir : (-1 * dir));
+    userClone.sort((a, b) => a[prop] < b[prop] ? dir : (-1 * dir));
 
-    return { users };
+    return { users: userClone };
   }
 
   constructor() {
@@ -79,8 +81,9 @@ class UserStore {
     this.users[index] = user;
   }
 
-  onUpdateUserSuccess([ref, user]) {
+  onUpdateUserSuccess([ ref, user ]) {
     let index = this.users.indexOf(ref);
+
     this.users[index] = user;
   }
 

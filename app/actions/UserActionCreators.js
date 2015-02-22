@@ -66,7 +66,7 @@ class UserActionCreators {
 
     return UserAPI.updateUser(user, params)
       .then(onSuccess.bind(onSuccess, user))
-      .catch(onError.bind(onError, user));
+      .catch(onError);
   }
 
   destroyUser(id) {
