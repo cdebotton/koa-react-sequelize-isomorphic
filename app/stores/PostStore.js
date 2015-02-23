@@ -1,20 +1,27 @@
 'use strict';
 
 import alt from "../alt";
-import {injectIntoList} from "../utils/ListUtils";
+import assign from "object-assign";
 import PostActionCreators from "../actions/PostActionCreators";
 
 class PostStore {
-  constructor() {
-    this.bindActions(PostActionCreators);
-    this.posts = [];
+  static getSorted() {
+    let { posts } = this.getState();
+    let sorted = Object.keys(posts)
+      .map(id => posts[id])
+      .sort((a, b) => a.date > b.date ? -1 : 1);
+
+    return { posts: sorted };
   }
 
-  onGetPostsSuccess(data) {
-    let { posts } = this;
-    let { posts: postsReceived } = data.response;
+  constructor() {
+    this.bindActions(PostActionCreators);
+    this.posts = {};
+  }
 
-    this.posts = injectIntoList(posts, postsReceived);
+  onGetPostsSuccess(resp) {
+    let { posts } = resp.entities;
+    this.posts = assign({}, this.posts, posts);
   }
 }
 

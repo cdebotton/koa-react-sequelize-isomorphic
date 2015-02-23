@@ -16,7 +16,7 @@ var IndexRoute = React.createClass({
   },
 
   getInitialState() {
-    let { posts } = PostStore.getState();
+    let { posts } = PostStore.getSorted();
 
     return { posts };
   },
