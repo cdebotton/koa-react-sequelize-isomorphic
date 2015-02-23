@@ -21,16 +21,11 @@ class UserActionCreators {
   }
 
   getUsers() {
-    let {
-      getUsersSuccess: onSuccess,
-      getUsersError: onError
-    } = this.actions;
-
     this.dispatch();
 
     return UserAPI.getUsers()
-      .then(onSuccess)
-      .catch(onError);
+      .then(this.actions.getUsersSuccess)
+      .catch(this.actions.getUsersError);
   }
 
   getUser(userId) {
@@ -42,31 +37,19 @@ class UserActionCreators {
   }
 
   createUser(email) {
-    let {
-      createUserSuccess: onSuccess,
-      createUserError: onError
-    } = this.actions;
-
-    let user = { email };
-
-    this.dispatch(user);
+    this.dispatch({ email });
 
     return UserAPI.createUser(email)
-      .then(onSuccess.bind(onSuccess, user))
-      .catch(onError.bind(onError, user));
+      .then(this.actions.createUserSuccess)
+      .catch(this.actions.createUserError);
   }
 
   updateUser(user, params) {
-    let {
-      updateUserSuccess: onSuccess,
-      updateUserError: onError
-    } = this.actions;
-
     this.dispatch({ user, params });
 
     return UserAPI.updateUser(user, params)
-      .then(onSuccess.bind(onSuccess, user))
-      .catch(onError);
+      .then(this.actions.updateUserSuccess)
+      .catch(this.actions.updateUserError);
   }
 
   destroyUser(id) {

@@ -1,15 +1,33 @@
 'use strict';
 
-import UserStore from "./UserStore";
 import alt from "../alt";
+import assign from "object-assign";
+import UserStore from "./UserStore";
+import UserActionCreators from "../actions/UserActionCreators";
 
 class ProfileStore {
-  createUser(user) {
-    this.waitFor([UserStore.dispatchToken]);
+  static getByUserId(id) {
+    let { profiles } = this.getState();
+    let userId = parseInt(id);
+
+    return Object.keys(profiles)
+      .map(key => profiles[key])
+      .find(profile => profile.UserId === userId);
   }
 
-  createUserSuccess([ref, user]) {
-    this.waitFor([UserStore.dispatchToken]);
+  constructor() {
+    this.bindActions(UserActionCreators);
+    this.profiles = {};
+  }
+
+  onGetUsersSuccess(resp) {
+    this.waitFor(UserStore.dispatchToken);
+    let { profiles } = resp.entities;
+    this.profiles = assign({}, this.profiles, profiles);
+  }
+
+  onDestroyUser(user) {
+
   }
 };
 

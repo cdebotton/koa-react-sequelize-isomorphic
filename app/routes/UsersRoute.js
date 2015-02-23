@@ -3,6 +3,7 @@
 import moment from "moment";
 import React from "react/addons";
 import UserStore from "../stores/UserStore";
+import ProfileStore from "../stores/ProfileStore";
 import {Link, RouteHandler} from "react-router";
 import ListHeader from "../components/ListHeader";
 import ListenerMixin from "alt/mixins/ListenerMixin";

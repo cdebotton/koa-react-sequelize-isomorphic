@@ -2,8 +2,9 @@
 
 import React from "react/addons";
 import UserStore from "../stores/UserStore";
-import UserActionCreators from "../actions/UserActionCreators";
+import ProfileStore from "../stores/ProfileStore";
 import ListenerMixin from "alt/mixins/ListenerMixin";
+import UserActionCreators from "../actions/UserActionCreators";
 
 import {
   State as RouterStateMixin,
@@ -25,13 +26,15 @@ var UserRoute = React.createClass({
 
   getInitialState() {
     let { userId } = this.getParams();
-    let user = UserStore.getById(userId);
+    let user = UserStore.getById(userId) || {};
+    let profile = ProfileStore.getByUserId(userId) || {};
 
-    return user;
+    return { user, profile };
   },
 
   componentWillMount() {
     this.listenTo(UserStore, this.onChange);
+    this.listenTo(ProfileStore, this.onChange);
   },
 
   onChange() {
@@ -56,6 +59,7 @@ var UserRoute = React.createClass({
   },
 
   render() {
+    let { user, profile } = this.state;
 
     return (
       <div className="user-route">
@@ -64,30 +68,34 @@ var UserRoute = React.createClass({
           <fieldset>
             <label htmlFor="user-email">Email</label>
             <input
+              key={`user-email-${user.id}`}
               id="user-email"
               ref="email"
               type="email"
               placeholder="email"
-              valueLink={this.linkState('email')} />
+              defaultValue={user.email} />
           </fieldset>
           <fieldset>
             <label htmlFor="first-name">Name</label>
             <input
+              key={`profile-firstName-${profile.id}`}
               id="first-name"
               ref="firstName"
               type="text"
               placeholder="First name"
-              valueLink={this.linkState('firstName')} />
+              defaultValue={profile.firstName} />
             <input
+              key={`profile-middleName-${profile.id}`}
               ref="middleName"
               type="text"
               placeholder="Middle name"
-              valueLink={this.linkState('middleName')} />
+              defaultValue={profile.middleName} />
             <input
+              key={`profile-lastName-${profile.id}`}
               ref="lastName"
               type="text"
               placeholder="Last name"
-              valueLink={this.linkState('lastName')} />
+              defaultValue={profile.lastName} />
           </fieldset>
           <button type="submit">Save</button>
           <button type="reset" onClick={this.handleCancel}>Cancel</button>
