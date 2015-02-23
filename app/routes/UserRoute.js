@@ -44,10 +44,10 @@ var UserRoute = React.createClass({
   handleSubmit(event) {
     event.preventDefault();
 
-    let { state } = this;
+    let { user, profile } = this.state;
     let email = this.refs.email.getDOMNode().value;
 
-    UserActionCreators.updateUser(state, { email });
+    UserActionCreators.updateUser(user, { email });
 
     this.transitionTo('users');
   },
