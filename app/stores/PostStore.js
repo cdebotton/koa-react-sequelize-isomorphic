@@ -1,27 +1,27 @@
 'use strict';
 
 import alt from "../alt";
-import assign from "object-assign";
+import { Map, fromJS } from "immutable";
 import PostActionCreators from "../actions/PostActionCreators";
 
 class PostStore {
-  static getSorted() {
-    let { posts } = this.getState();
-    let sorted = Object.keys(posts)
-      .map(id => posts[id])
-      .sort((a, b) => a.date > b.date ? -1 : 1);
-
-    return { posts: sorted };
-  }
-
   constructor() {
     this.bindActions(PostActionCreators);
-    this.posts = {};
+    this.posts = Map();
+
+    this.on('init', this.setup);
+    this.on('bootstrap', this.setup);
+  }
+
+  setup() {
+    if (! Map.isMap(this.posts)) {
+      this.posts = fromJS(this.posts);
+    }
   }
 
   onGetPostsSuccess(resp) {
     let { posts } = resp.entities;
-    this.posts = assign({}, this.posts, posts);
+    this.posts = this.posts.merge(fromJS(posts));
   }
 }
 

@@ -3,6 +3,7 @@
 import React from "react";
 import PostStore from "../stores/PostStore";
 import ListenerMixin from "alt/mixins/ListenerMixin";
+import { toSortedList } from "../utils/ImmutableHelpers";
 import AppActionCreators from "../actions/AppActionCreators";
 import PostActionCreators from "../actions/PostActionCreators";
 
@@ -16,7 +17,7 @@ var IndexRoute = React.createClass({
   },
 
   getInitialState() {
-    let { posts } = PostStore.getSorted();
+    let { posts } = PostStore.getState();
 
     return { posts };
   },
@@ -77,7 +78,10 @@ var IndexRoute = React.createClass({
   },
 
   render() {
-    var {posts} = this.state;
+    let { posts } = this.state;
+
+
+    let postsList = toSortedList(posts, 'id', 'desc');
 
     return (
       <div className="index-route">
@@ -88,7 +92,7 @@ var IndexRoute = React.createClass({
           <button onClick={this.onToggle}>Toggle</button>
         </nav>
         {posts &&
-          <ul className="post-wall">{posts.map(this.renderPostItem)}</ul>
+          <ul className="post-wall">{postsList.map(this.renderPostItem)}</ul>
         }
       </div>
     );
