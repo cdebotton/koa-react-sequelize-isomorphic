@@ -1,8 +1,9 @@
 'use strict';
 
 import alt from "../alt";
+import Immutable from "immutable";
 import assign from "object-assign";
-import {injectIntoList} from "../utils/ListUtils";
+import { injectIntoList } from "../utils/ListUtils";
 import UserActionCreators from "../actions/UserActionCreators";
 
 var DIRTY_ID = 0;
@@ -28,8 +29,7 @@ class UserStore {
 
   constructor() {
     this.bindActions(UserActionCreators);
-    this.sortProperty = 'id';
-    this.sortOrder = 'asc';
+
     this.users = {};
   }
 

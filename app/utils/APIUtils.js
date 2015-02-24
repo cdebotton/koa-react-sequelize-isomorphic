@@ -1,5 +1,4 @@
 import superagent from "superagent";
-import Promise from "bluebird";
 import path from "path";
 
 const TIMEOUT = 10000;

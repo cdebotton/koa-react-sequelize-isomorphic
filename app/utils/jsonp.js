@@ -1,7 +1,6 @@
 'use strict';
 
 var co = require('co');
-var Promise = require('bluebird');
 
 function noop() {}
 
