@@ -1,36 +1,27 @@
 'use strict';
 
 import alt from "../alt";
-import Immutable from "immutable";
-import assign from "object-assign";
-import { injectIntoList } from "../utils/ListUtils";
+import { Map, fromJS } from "immutable";
 import UserActionCreators from "../actions/UserActionCreators";
 
 var DIRTY_ID = 0;
 
 class UserStore {
-  static getSorted() {
-    let { users, sortProperty, sortOrder } = this.getState();
-    let order = sortOrder === 'asc' ? -1 : 1;
-    let sorted = Object.keys(users)
-      .map(key => assign({}, users[key]))
-      .sort((a, b) => {
-        return a[sortProperty] < b[sortProperty] ? order : order * -1;
-      });
-
-    return { users: sorted };
-  }
-
-  static getById(id) {
-    let { users } = this.getState();
-
-    return assign({}, users[id]);
-  }
-
   constructor() {
     this.bindActions(UserActionCreators);
 
-    this.users = {};
+    this.on('bootstrap', this.setup);
+    this.on('init', this.setup);
+
+    this.sortProperty = 'id';
+    this.sortOrder = 'desc';
+    this.users = Map();
+  }
+
+  setup() {
+    if (! Map.isMap(this.users)) {
+      this.users = fromJS(this.users, (key, value) => value.toMap());
+    }
   }
 
   onSetSortProperty(prop) {
@@ -49,51 +40,49 @@ class UserStore {
   onGetUsersSuccess(resp) {
     let { users } = resp.entities;
 
-    this.users = assign({}, this.users, users)
+    this.users = this.users.merge(fromJS(users, (key, value) => value.toMap()));
   }
 
   onGetUserSuccess(resp) {
     let { users } = resp.entities;
 
-    this.users = assign({}, this.users, users);
+    this.users = this.users.merge(fromJS(users, (key, value) => value.toMap()));
   }
 
   onCreateUser(user = {}) {
     let nextId = `${++DIRTY_ID}_DIRTY`;
 
-    this.users[nextId] = user;
+    this.users = this.users.set(nextId, fromJS(user))
   }
 
   onCreateUserSuccess(resp) {
     let { users } = resp.entities;
     let lastId = `${DIRTY_ID}_DIRTY`;
 
-    delete this.users[lastId];
-
-    this.users = assign({}, this.users, users);
+    this.users = this.users.delete(lastId);
+    this.users = this.users.merge(users);
   }
 
   onCreateUserError([ ref ]) {
     let lastId = `${DIRTY_ID}_DIRTY`;
 
-    delete this.users[lastId];
+    this.users = this.users.delete(lastId);
   }
 
   onUpdateUser({ user, params }) {
-    let { id } = user;
-    let updated = assign({}, this.users[id], params);
+    let id = user.get('id');
 
-    this.users[id] = updated;
+    this.users = this.users.set(id, fromJS(params));
   }
 
-  onUpdateUserSuccess(user) {
-    let { id } = user;
+  onUpdateUserSuccess(resp) {
+    let { users } = resp.entities;
 
-    this.users[id] = user;
+    this.users = this.users.merge(fromJS(users));
   }
 
   onDestroyUser({ id }) {
-    delete this.users[id];
+    this.users = this.users.delete(id);
   }
 }
 

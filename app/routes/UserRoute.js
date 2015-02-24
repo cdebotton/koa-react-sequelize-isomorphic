@@ -26,7 +26,8 @@ var UserRoute = React.createClass({
 
   getInitialState() {
     let { userId } = this.getParams();
-    let user = UserStore.getById(userId) || {};
+    let { users } = UserStore.getState();
+    let user = users.getIn([userId]);
     let profile = ProfileStore.getByUserId(userId) || {};
 
     return { user, profile };
@@ -60,6 +61,8 @@ var UserRoute = React.createClass({
 
   render() {
     let { user, profile } = this.state;
+
+    user = user.toJS();
 
     return (
       <div className="user-route">

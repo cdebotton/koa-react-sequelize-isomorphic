@@ -5,6 +5,7 @@ import UserStore from"../stores/UserStore";
 import ListHeader from "../components/ListHeader";
 import ListenerMixin from "alt/mixins/ListenerMixin";
 import UserListItem from "../components/UserListItem";
+import { toSortedList } from "../utils/ImmutableHelpers";
 
 var { PropTypes } = React;
 
@@ -12,9 +13,9 @@ var UserList = React.createClass({
   mixins: [ListenerMixin],
 
   getInitialState() {
-    let { users } = UserStore.getSorted();
+    let { users, sortProperty, sortOrder } = UserStore.getState();
 
-    return { users };
+    return { users, sortProperty, sortOrder };
   },
 
   componentWillMount() {
@@ -34,22 +35,35 @@ var UserList = React.createClass({
   },
 
   render() {
-    let { users } = this.state;
+    let { users, sortProperty, sortOrder } = this.state;
+    let userList = toSortedList(users, sortProperty, sortOrder);
 
     return (
       <div className="user-list">
-        {users.length > 0 &&
+        {userList.length > 0 &&
           <ul className="users">
             <li className="titles">
-              <ListHeader className="user-id" sortProperty="id">ID</ListHeader>
-              <ListHeader className="user-link" sortProperty="email">Email</ListHeader>
-              <ListHeader className="created-at" sortProperty="createdAt">Created at</ListHeader>
-              <ListHeader className="updated-at" sortProperty="updatedAt">Updated at</ListHeader>
+              <ListHeader
+                className="user-id"
+                sortProperty="id"
+                children="ID" />
+              <ListHeader
+                className="user-link"
+                sortProperty="email"
+                children="Email" />
+              <ListHeader
+                className="created-at"
+                sortProperty="createdAt"
+                children="Created at" />
+              <ListHeader
+                className="updated-at"
+                sortProperty="updatedAt"
+                children="Updated at" />
             </li>
-            {users.map(this.renderUserListItem)}
+            {userList.map(this.renderUserListItem)}
           </ul>
         }
-        {users.length === 0 &&
+        {userList.length === 0 &&
           <p>No users.</p>
         }
       </div>

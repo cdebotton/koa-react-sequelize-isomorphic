@@ -47,12 +47,14 @@ class UserActionCreators {
   updateUser(user, params) {
     this.dispatch({ user, params });
 
-    return UserAPI.updateUser(user, params)
+    return UserAPI.updateUser(user.toJS(), params)
       .then(this.actions.updateUserSuccess)
       .catch(this.actions.updateUserError);
   }
 
   destroyUser(id) {
+    id = id.toString();
+
     this.dispatch({id});
 
     return UserAPI.destroyUser(id)

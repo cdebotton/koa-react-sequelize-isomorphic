@@ -2,12 +2,14 @@
 
 import React from "react";
 import moment from "moment";
-import { Link } from "react-router";
 import UserActionCreators from "../actions/UserActionCreators";
+import { Link, State as RouterStateMixin } from "react-router";
 
 var { PropTypes } = React;
 
 var UserListItem = React.createClass({
+  mixins: [RouterStateMixin],
+
   propTypes: {
     user: PropTypes.shape({
       id: PropTypes.number.isRequired,
