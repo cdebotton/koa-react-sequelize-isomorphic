@@ -9,7 +9,7 @@
   "author": "pruno",
   "license": "ISC",
   "dependencies": {
-    "alt": "git+https://github.com:cdebotton/alt.git",
+    "alt": "^0.13.8",
     "babel": "^4.1.1",
     "cheerio": "^0.18.0",
     "co": "^4.3.1",
