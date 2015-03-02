@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import alt from "../alt";
 import TumblrAPI from "../utils/TumblrAPI";
@@ -6,8 +6,8 @@ import TumblrAPI from "../utils/TumblrAPI";
 class PostActionCreators {
   constructor() {
     this.generateActions(
-      'getPostsSuccess',
-      'getPostsError'
+      "getPostsSuccess",
+      "getPostsError"
     );
   }
 

@@ -1,3 +1,5 @@
+"use strict";
+
 import {
   User,
   Profile
@@ -5,9 +7,9 @@ import {
 
 export default (router) => {
   router
-    .get('/users', function *(next) {
+    .get("/users", function *(next) {
       let users = yield User.findAll({
-        attributes: ['id', 'email', 'createdAt', 'updatedAt'],
+        attributes: ["id", "email", "createdAt", "updatedAt"],
         include: [Profile]
       });
 
@@ -15,7 +17,7 @@ export default (router) => {
     });
 
   router
-    .post('/users', function *(next) {
+    .post("/users", function *(next) {
       let {email} = this.request.body;
 
       let user = yield User.create({
@@ -33,14 +35,14 @@ export default (router) => {
     });
 
   router
-    .param('user', findUser)
-    .get('/users/:user', function *(next) {
+    .param("user", findUser)
+    .get("/users/:user", function *(next) {
       this.body = this.user;
     });
 
   router
-    .param('user', findUser)
-    .put('/users/:user', function *(next) {
+    .param("user", findUser)
+    .put("/users/:user", function *(next) {
       let { body: data } = this.request;
       let { user } = this;
 
@@ -50,8 +52,8 @@ export default (router) => {
     });
 
   router
-    .param('user', findUser)
-    .del('/users/:user', function *(next) {
+    .param("user", findUser)
+    .del("/users/:user", function *(next) {
       this.user.Profile.destroy().then(() => {
         this.user.destroy();
       });
@@ -64,11 +66,11 @@ export default (router) => {
 function *findUser(userId, next) {
   this.user = yield User.find({
     where: {id: userId},
-    attributes: ['id', 'email', 'createdAt', 'updatedAt'],
+    attributes: ["id", "email", "createdAt", "updatedAt"],
     include: [Profile]
   });
 
-  if (! this.user) return this.status = 404;
+  if (!this.user) return this.status = 404;
 
   yield next;
 };

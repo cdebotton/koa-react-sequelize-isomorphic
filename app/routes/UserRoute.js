@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import React from "react/addons";
 import UserStore from "../stores/UserStore";
@@ -50,13 +50,13 @@ var UserRoute = React.createClass({
 
     UserActionCreators.updateUser(user, { email });
 
-    this.transitionTo('users');
+    this.transitionTo("users");
   },
 
   handleCancel(event) {
     event.preventDefault();
 
-    this.transitionTo('users');
+    this.transitionTo("users");
   },
 
   render() {

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import React from "react";
 import PostStore from "../stores/PostStore";
@@ -46,7 +46,7 @@ var IndexRoute = React.createClass({
     var {url, width, height} = photo.alt_sizes[0];
     return (
       <img
-        key={postId + '.image.' + key}
+        key={postId + ".image." + key}
         src={url}
         width={width}
         height={height} />
@@ -81,7 +81,7 @@ var IndexRoute = React.createClass({
     let { posts } = this.state;
 
 
-    let postsList = toSortedList(posts, 'id', 'desc');
+    let postsList = toSortedList(posts, "id", "desc");
 
     return (
       <div className="index-route">

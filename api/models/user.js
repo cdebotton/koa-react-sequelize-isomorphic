@@ -1,5 +1,7 @@
+"use strict";
+
 export default (sequelize, DataTypes) => {
-  var User = sequelize.define('User', {
+  var User = sequelize.define("User", {
     email: DataTypes.STRING,
     password: DataTypes.STRING
   }, {

@@ -1,5 +1,7 @@
+"use strict";
+
 export default (sequelize, DataTypes) => {
-  var Photo = sequelize.define('Photo', {
+  var Photo = sequelize.define("Photo", {
     type: DataTypes.STRING,
     bucket: DataTypes.STRING,
     file: DataTypes.STRING,

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import React from "react";
 import moment from "moment";
@@ -30,7 +30,7 @@ var UserListItem = React.createClass({
 
     return (
       <li className="user">
-        <i className="user-id fa fa-users">{user.id ? user.id : ''}</i>
+        <i className="user-id fa fa-users">{user.id ? user.id : ""}</i>
         {user.id &&
           <Link className="user-link" to="user" params={{userId: user.id}}>{user.email}</Link>
         }

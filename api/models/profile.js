@@ -1,5 +1,7 @@
+"use strict";
+
 export default (sequelize, DataTypes) => {
-  var Profile = sequelize.define('Profile', {
+  var Profile = sequelize.define("Profile", {
     firstName: DataTypes.STRING,
     middleName: DataTypes.STRING,
     lastName: DataTypes.STRING,

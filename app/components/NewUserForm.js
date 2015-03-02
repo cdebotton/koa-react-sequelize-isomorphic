@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import React from "react/addons";
 import UserActionCreators from "../actions/UserActionCreators";
@@ -9,7 +9,7 @@ var NewUserForm = React.createClass({
   mixins: [LinkedStateMixin],
 
   getInitialState() {
-    return { email: '' };
+    return { email: "" };
   },
 
   handleSubmit(event) {
@@ -28,7 +28,7 @@ var NewUserForm = React.createClass({
         <input
           type="email"
           placeholder="email"
-          valueLink={this.linkState('email')} />
+          valueLink={this.linkState("email")} />
         <button type="submit">Create user</button>
       </form>
     );

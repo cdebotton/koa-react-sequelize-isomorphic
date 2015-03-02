@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import Head from "./Head";
 import React from "react/addons";
@@ -32,7 +32,7 @@ var App = React.createClass({
   },
 
   getDefaultProps() {
-    return {env: 'development'};
+    return {env: "development"};
   },
 
   render() {

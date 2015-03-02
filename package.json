@@ -45,6 +45,7 @@
     "gulp": "^3.8.10",
     "pruno": "^2.0.3",
     "pruno-del": "^1.1.1",
+    "pruno-eslint": "^0.2.1",
     "pruno-http": "^2.0.2",
     "pruno-publish": "^1.0.3",
     "pruno-stylus": "^1.0.4",

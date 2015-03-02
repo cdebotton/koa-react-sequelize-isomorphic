@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import alt from "../alt";
 import AppActionCreators from "../actions/AppActionCreators";
@@ -23,4 +23,4 @@ class AppStore {
   }
 }
 
-export default alt.createStore(AppStore, 'AppStore');
+export default alt.createStore(AppStore, "AppStore");

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import React from "react";
 
@@ -8,13 +8,13 @@ var Head = React.createClass({
   },
 
   getDefaultProps() {
-    return {env: 'development'};
+    return {env: "development"};
   },
 
   render() {
     const {env} = this.props;
-    const DEV = env === 'development';
-    const CSS = DEV ? '/stylesheets/app.css' : '/stylesheets/app.min.css';
+    const DEV = env === "development";
+    const CSS = DEV ? "/stylesheets/app.css" : "/stylesheets/app.min.css";
 
     return (
       <head>

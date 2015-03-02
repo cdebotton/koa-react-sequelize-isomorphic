@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import alt from "../alt";
 import UserAPI from "../utils/UserAPI";
@@ -6,17 +6,17 @@ import UserAPI from "../utils/UserAPI";
 class UserActionCreators {
   constructor() {
     this.generateActions(
-      'getUsersSuccess',
-      'getUsersError',
-      'getUserSuccess',
-      'getUserError',
-      'createUserSuccess',
-      'createUserError',
-      'updateUserSuccess',
-      'updateUserError',
-      'destroyUserSuccess',
-      'destroyUserError',
-      'setSortProperty'
+      "getUsersSuccess",
+      "getUsersError",
+      "getUserSuccess",
+      "getUserError",
+      "createUserSuccess",
+      "createUserError",
+      "updateUserSuccess",
+      "updateUserError",
+      "destroyUserSuccess",
+      "destroyUserError",
+      "setSortProperty"
     );
   }
 

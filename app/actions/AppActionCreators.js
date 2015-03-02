@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
 import alt from "../alt";
 
 class AppActionCreators {
   constructor() {
     this.generateActions(
-      'request',
-      'toggle',
-      'activate',
-      'deactivate'
+      "request",
+      "toggle",
+      "activate",
+      "deactivate"
     );
   }
 }

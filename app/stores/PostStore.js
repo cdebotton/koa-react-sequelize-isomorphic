@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import alt from "../alt";
 import { Map, fromJS } from "immutable";
@@ -9,12 +9,12 @@ class PostStore {
     this.bindActions(PostActionCreators);
     this.posts = Map();
 
-    this.on('init', this.setup);
-    this.on('bootstrap', this.setup);
+    this.on("init", this.setup);
+    this.on("bootstrap", this.setup);
   }
 
   setup() {
-    if (! Map.isMap(this.posts)) {
+    if (!Map.isMap(this.posts)) {
       this.posts = fromJS(this.posts);
     }
   }
@@ -25,4 +25,4 @@ class PostStore {
   }
 }
 
-export default alt.createStore(PostStore, 'PostStore');
+export default alt.createStore(PostStore, "PostStore");

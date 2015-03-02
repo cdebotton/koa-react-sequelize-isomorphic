@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
 import React from "react";
-import {Route, DefaultRoute} from "react-router";
+import { Route, DefaultRoute } from "react-router";
 
 import App from "../components/App";
 import IndexRoute from "./IndexRoute";

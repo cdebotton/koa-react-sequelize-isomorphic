@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 import React from "react/addons";
 import UserStore from "../stores/UserStore";
@@ -20,7 +20,7 @@ var ListHeader = React.createClass({
     let { sortProperty, sortOrder } = UserStore.getState();
     let active = sortProperty === this.props.sortProperty;
 
-    return {sortOrder: 'asc', active};
+    return {sortOrder: "asc", active};
   },
 
   componentWillMount() {
@@ -40,9 +40,9 @@ var ListHeader = React.createClass({
     let { active } = this.state;
 
     let cx = classSet({
-      'header': true,
+      "header": true,
       [className]: className ? true : false,
-      'active': active
+      "active": active
     });
 
     return (
